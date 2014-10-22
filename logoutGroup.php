@@ -8,7 +8,6 @@
                     <?php } elseif (isset($_SESSION['fb_session'])) {?>
                         <a class="btn btn-facebook" href="<?php echo $logoutURL ?>"><i class="fa fa-facebook"></i> | Logout from Facebook</a>
                     <?php } ?>
-                    To go back and choose another resource.
                 </span>
         <br><br>
     </li>

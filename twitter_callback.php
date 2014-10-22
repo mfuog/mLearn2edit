@@ -33,7 +33,7 @@ if (isset($_SESSION['twitter_access_token'])) {
 
 <?php include('header.php')?>
 
-<div class ="centered">
+<div id="logout" class ="centered">
 
     <?php include('logoutGroup.php')?>
 
