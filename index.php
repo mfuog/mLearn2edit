@@ -37,8 +37,8 @@ $googleClient = new Google_Client();
 $googleClient->setClientId(GOOGLE_CLIENT_ID);
 $googleClient->setClientSecret(GOOGLE_CLIENT_SECRET);
 $googleClient->setDeveloperKey(GOOGLE_API_KEY);
-$googleClient->setRedirectUri($baseURL);
-$googleClient->addScope("https://www.googleapis.com/auth/youtube");
+$googleClient->setRedirectUri($baseURL . '/google_callback.php');
+$googleClient->addScope("https://www.googleapis.com/auth/userinfo.profile");
 # Provide auth URL
 $googleAuthURL = $googleClient->createAuthUrl();
 
