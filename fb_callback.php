@@ -9,7 +9,7 @@ use Facebook\FacebookRequestException;
 
 $session = session_start();
 
-/** Setup: Set commonly used, relative URLs */
+# commonly used URLs
 $baseURL = 'http://' . $_SERVER['HTTP_HOST'] . dirname($_SERVER['SCRIPT_NAME']);
 $homeURL = $baseURL . '/' . basename($_SERVER['SCRIPT_NAME']);
 $logoutURL = $baseURL . '/index.php?logout';
@@ -31,9 +31,7 @@ try {
     // When validation fails or other local issues
 }
 
-/**
- * With a non-expired access token (saved in the session), we can make requests, else we generate an authentication URL.
- */
+# With a non-expired access token (saved in the session), we can make requests, else we generate an authentication URL.
 if(isset($_SESSION['fb_session'])) {
     # Make a request to the facebook Graph API
     $request = new FacebookRequest($_SESSION['fb_session'], 'GET', '/me');
@@ -41,7 +39,7 @@ if(isset($_SESSION['fb_session'])) {
     $graphObject = $response->getGraphObject();
     # example: user's name
     $userName= $graphObject->getProperty('first_name');
-    printf('%s, you are logged in as an admin (<i>via Facebook</i>), $userName);
+    printf('%s, you are logged in as an admin (<i>via Facebook</i>)', $userName);
 
     # Provide a logout URL
     $logoutURL = $baseURL . '/index.php?logout';
