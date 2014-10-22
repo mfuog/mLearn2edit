@@ -47,7 +47,7 @@ $googleAuthURL = $googleClient->createAuthUrl();
 # Twitter setup
 ##
 $twitterConnection = new TwitterOAuth(TWITTER_CONSUMER_KEY, TWITTER_CONSUMER_SECRET);
-$requestToken = $twitterConnection->getRequestToken($baseURL);
+$requestToken = $twitterConnection->getRequestToken($baseURL . '/twitter_callback.php');
 # Remember temporary token for use on callback page
 $_SESSION['twitter_request_token'] = $requestToken['oauth_token'];
 $_SESSION['twitter_request_token_secret'] = $requestToken['oauth_token_secret'];
