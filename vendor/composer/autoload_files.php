@@ -6,5 +6,5 @@ $vendorDir = dirname(dirname(__FILE__));
 $baseDir = dirname($vendorDir);
 
 return array(
-    $vendorDir . '/abraham/twitteroauth/twitteroauth/OAuth.php',
+    $vendorDir . '/abraham/twitteroauth/twitteroauth/twitteroauth.php',
 );
