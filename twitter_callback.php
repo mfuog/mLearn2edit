@@ -28,7 +28,7 @@ if (isset($_GET['oauth_token'])) {
 
 if (isset($_SESSION['twitter_access_token'])) {
     $user = $twitter->get('account/verify_credentials');
-    printf('%s, you are logged in as: admin', $user->name);
+    printf('%s, you are logged in as an admin (<i>via Twitter</i>)', $user->name);
 }?>
 
 <?php include('header.php')?>

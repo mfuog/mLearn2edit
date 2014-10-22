@@ -41,7 +41,7 @@ if(isset($_SESSION['fb_session'])) {
     $graphObject = $response->getGraphObject();
     # example: user's name
     $userName= $graphObject->getProperty('first_name');
-    printf('%s, you are logged in via Facebook!', $userName);
+    printf('%s, you are logged in as an admin (<i>via Facebook</i>), $userName);
 
     # Provide a logout URL
     $logoutURL = $baseURL . '/index.php?logout';
