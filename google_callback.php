@@ -57,14 +57,82 @@ if ($googleClient->getAccessToken()) {
         $user = $plus->people->get('me');
         printf('%s, you are logged in as a %s (<i>via Google</i>)', $user->displayName, $_SESSION['user_role']);
     }
-}?>
+}
+
+# commonly used mlearn4web URLs
+$serviceHost = "http://celtest1.lnu.se:3030";
+$baseUrlAPI = $serviceHost . "/mlearn4web";
+
+# Retrieve all datasets
+$datasetsRequest = $baseUrlAPI . "/getalldata";
+$datasets = trim(file_get_contents($datasetsRequest));
+$datasets = json_decode($datasets, true);
+
+?>
+
+
 
 <?php include('header.php')?>
 
-    <div id="logout" class ="centered">
-
+    <div id="content" class ="centered">
         <?php include('logoutGroup.php')?>
+        <h3>Saved image data <span class="badge alert-warning"><?php echo $_SESSION['user_role'] ?></span></h3>
 
+        <?php if(!isset($_GET['teacherID'])) { ?>
+            <div class="well">Enter your <i>mlearn4web</i> user ID in order to list image containing datasets that were committed for scenarios created by you.</div>
+
+            <form method="GET" role="search">
+                <button type="submit" class="btn btn-primary pull-right">Proceed</button>
+                <div class="form-group">
+                    <div class="input-group">
+                        <span class="input-group-addon">Teacher's ID:</span>
+                        <input class="form-control" type="search" id="teacherID" name="teacherID" placeholder="e.g. 544510f3f70096dc60645672">
+                    </div>
+                </div>
+
+            </form>
+            <hr>
+        <?php } else { ?>
+
+            <div class="well">Showing image containing datasets, that belong to scenarios created by you <i>(user ID: <?php echo $_GET['teacherID'] ?>)</i>.</div>
+            <ol>
+                <?php foreach($datasets as $dataset) {
+                    $scenarioRequest = $baseUrlAPI . "/get/" . $dataset['scenarioId'];
+                    $scenario = json_decode(trim(file_get_contents($scenarioRequest)), true);
+                    # only display a dataset, if it contains any images and was authored by the group
+                    if (strpos(json_encode($dataset), "image") !== false && $scenario['user'] == $_GET['teacherID']) {?>
+
+                        <li>
+                            <h4><b>Scenario: </b><?php echo $scenario['title'] ?></h4>
+                            <b>Group: </b> <?php echo $dataset['groupname'] ?><br>
+                            <b>Submitted data:</b>
+                            <ul>
+                                <?php foreach($dataset['data'] as $key=>$screen) {
+                                    # only display a screen, if it contains any images
+                                    if (strpos(json_encode($screen), "image") !== false ) {?>
+                                        <li>
+                                            <b><?php echo $key ?>:</b>
+                                            <ul>
+                                                <?php foreach($screen as $element) { ?>
+
+                                                    <?php if ($element['type'] == 'image') { ?>
+                                                        <li>
+                                                            <b>Image element:</b> <a href="<?php echo $serviceHost . $element['value']?>">image</a>
+                                                        </li>
+                                                    <?php } ?>
+
+                                                <?php } ?>
+                                            </ul>
+                                        </li>
+                                    <?php } ?>
+                                <?php } ?>
+                            </ul>
+                        </li>
+                        <hr>
+                    <?php } ?>
+                <?php } ?>
+            </ol>
+        <?php } ?>
     </div><!--END centered-->
 
 <?php include('footer.php')?>
