@@ -57,8 +57,8 @@ $datasets = json_decode($datasets, true);
         if (strpos(json_encode($dataset), "image") !== false ) {?>
 
         <li>
-            <h4><b>Group name: </b> <?php echo $dataset['groupname'] ?></h4>
-            <b>For scenario: </b><?php echo $scenario['title'] ?><br>
+            <h4><b>Scenario: </b><?php echo $scenario['title'] ?></h4>
+            <b>Group: </b> <?php echo $dataset['groupname'] ?><br>
             <b>Submitted data:</b>
             <ul>
                 <?php foreach($dataset['data'] as $key=>$screen) {
