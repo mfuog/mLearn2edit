@@ -96,14 +96,23 @@ if(isset($_GET['teacherID'])) {
             </form>
             <hr>
         <?php } else { ?>
-
-            <div class="well">Showing image containing datasets, that belong to scenarios created by you <i>(user ID: <?php echo $_GET['teacherID'] ?>)</i>.</div>
+            <div class="well">Showing image containing datasets that:
+                <ul>
+                    <li>belong to scenarios created by you <i>(user ID: <?php echo $_GET['teacherID'] ?>)</i></li>
+                    <li>originate from a scenario tagged <i>[allTeachers]</i></li>
+                </ul>
+            </div>
             <ol>
                 <?php foreach($datasets as $dataset) {
                     $scenarioRequest = $baseUrlAPI . "/get/" . $dataset['scenarioId'];
-                    $scenario = json_decode(trim(file_get_contents($scenarioRequest)), true);
-                    # only display a dataset, if it contains any images and was authored by the group
-                    if (strpos(json_encode($dataset), "image") !== false && $scenario['user'] == $_GET['teacherID']) {?>
+                    $scenarioString = trim(file_get_contents($scenarioRequest));
+                    $scenario = json_decode($scenarioString, true);
+                    $datasetString = json_encode($dataset);
+
+                    # Only display a dataset, if it contains any images...
+                    if (strpos($datasetString, "image") !== false
+                        # ...and if the scenario was authored by the user or made public for all teachers
+                        && ($scenario['user'] == $_GET['teacherID'] || strpos($scenarioString, "[allTeachers]"))) {?>
 
                         <li>
                             <h4><b>Scenario: </b><?php echo $scenario['title'] ?></h4>
