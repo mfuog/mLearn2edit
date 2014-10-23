@@ -88,13 +88,23 @@ if(isset($_GET['groupname'])) {
         <hr>
         <?php } else { ?>
 
-        <div class="well">Showing image containing datasets, submitted by <i>"<?php echo $_GET['groupname'] ?>"</i>.</div>
+        <div class="well">Showing image containing datasets that:
+            <ul>
+                </ß><li>were submitted by group <i><?php echo( !empty($_GET['groupname']) ? $_GET['groupname'] :  '-') ?></i></li>
+                <li>originates from a scenario tagged <i>[allStudents]</i></li>
+            </ul>
+        </div>
         <ol>
             <?php foreach($datasets as $dataset) {
                 $scenarioRequest = $baseUrlAPI . "/get/" . $dataset['scenarioId'];
-                $scenario = json_decode(trim(file_get_contents($scenarioRequest)), true);
-                # only display a dataset, if it contains any images and was authored by the group
-                if (strpos(json_encode($dataset), "image") !== false && $dataset['groupname'] == $_GET['groupname']) {?>
+                $scenarioString = trim(file_get_contents($scenarioRequest));
+                $scenario = json_decode($scenarioString, true);
+                $datasetString = json_encode($dataset);
+
+                # Only display a dataset, if it contains any images...
+                if (strpos($datasetString, "image") !== false
+                    # ...and was authored by the group or made public for all students
+                    && ($dataset['groupname'] == $_GET['groupname'] || strpos($scenarioString, "[allStudents]"))) {?>
 
                     <li>
                         <h4><b>For scenario: </b><?php echo $scenario['title'] ?></h4>
