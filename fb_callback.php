@@ -90,8 +90,8 @@ if(isset($_GET['groupname'])) {
 
         <div class="well">Showing image containing datasets that:
             <ul>
-                </ß><li>were submitted by group <i><?php echo( !empty($_GET['groupname']) ? $_GET['groupname'] :  '-') ?></i></li>
-                <li>originates from a scenario tagged <i>[allStudents]</i></li>
+                <li>were submitted by group <i><?php echo( !empty($_GET['groupname']) ? $_GET['groupname'] :  '-') ?></i></li>
+                <li>originate from a scenario tagged <i>[allStudents]</i></li>
             </ul>
         </div>
         <ol>
