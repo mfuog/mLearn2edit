@@ -24,11 +24,12 @@ if (isset($_GET['oauth_token'])) {
     # save real access token (user's credentials are normally to be stored in a database)
     $_SESSION['twitter_access_token'] = $credentials['oauth_token'];
     $_SESSION['twitter_access_token_secret'] = $credentials['oauth_token_secret'];
+    $_SESSION['user_role'] = "admin"; # assign user role after login
 }
 
 if (isset($_SESSION['twitter_access_token'])) {
     $user = $twitter->get('account/verify_credentials');
-    printf('%s, you are logged in as an admin (<i>via Twitter</i>)', $user->name);
+    printf('%s, you are logged in as an %s (<i>via Twitter</i>)', $user->name, $_SESSION['user_role']);
 }?>
 
 <?php include('header.php')?>

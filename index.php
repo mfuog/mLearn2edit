@@ -18,7 +18,7 @@ $homeURL = $baseURL . '/' . basename($_SERVER['SCRIPT_NAME']);
 $logoutURL = $homeURL . '?logout';
 
 # To handle logging out and expired access tokens, delete the local access token
-# (usually saved in a database) and redirect to the home URL.
+# and user role and redirect to the home URL.
 if (isset($_REQUEST['logout']) || isset($_REQUEST['expired'])) {
 
     unset($_SESSION['google_access_token']);
@@ -27,6 +27,8 @@ if (isset($_REQUEST['logout']) || isset($_REQUEST['expired'])) {
     unset($_SESSION['twitter_request_token']);
     unset($_SESSION['twitter_request_token_secret']);
     unset($_SESSION['FBRLH_state']);
+    unset($_SESSION['fb_session']);
+    unset($_SESSION['user_role']);
     if (isset($_SESSION) && !empty($_SESSION)) {
         $loggedOut = true;
     }

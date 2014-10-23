@@ -51,11 +51,11 @@ if ($googleClient->getAccessToken()) {
 
         # remember the google access token for later use (this normally would be saved to a database)
         $_SESSION['google_access_token'] = $googleClient->getAccessToken();
+        $_SESSION['user_role'] = "teacher"; # assign user role after login
 
         $plus = new Google_Service_Plus($googleClient);
         $user = $plus->people->get('me');
-        printf('%s, you are logged in as an admin (<i>via Google</i>)', $user->displayName);
-
+        printf('%s, you are logged in as a %s (<i>via Google</i>)', $user->displayName, $_SESSION['user_role']);
     }
 }?>
 
