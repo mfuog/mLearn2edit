@@ -45,42 +45,47 @@ $datasets = json_decode($datasets, true);
 
 <?php include('header.php')?>
 
-<div class ="centered">
+<div id="content" class ="centered">
+    <h3>All datasets</h3>
+    <div class="well">Below, all datasets that contain any images are listed.</div>
+    <?php include('logoutGroup.php')?>
     <ol>
     <?php foreach($datasets as $dataset) {
         $scenarioRequest = $baseUrlAPI . "/get/" . $dataset['scenarioId'];
-        $scenario = json_decode(trim(file_get_contents($scenarioRequest)), true);?>
+        $scenario = json_decode(trim(file_get_contents($scenarioRequest)), true);
+        # only display a dataset, if it contains any images
+        if (strpos(json_encode($dataset), "image") !== false ) {?>
 
         <li>
-            <b>Group name: </b> <?php echo $dataset['groupname'] ?><br>
-            <b>From scenario: </b><?php echo $scenario['title'] ?><br>
+            <h4><b>Group name: </b> <?php echo $dataset['groupname'] ?></h4>
+            <b>For scenario: </b><?php echo $scenario['title'] ?><br>
             <b>Submitted data:</b>
             <ul>
-                <?php foreach($dataset['data'] as $key=>$screen) { ?>
-                <li>
-                    <b><?php echo $key ?>:</b>
-                    <ul>
-                        <?php foreach($screen as $element) { ?>
+                <?php foreach($dataset['data'] as $key=>$screen) {
+                    # only display a screen, if it contains any images
+                    if (strpos(json_encode($screen), "image") !== false ) {?>
+                        <li>
+                            <b><?php echo $key ?>:</b>
+                            <ul>
+                                <?php foreach($screen as $element) { ?>
 
-                            <?php if ($element['type'] == 'image') { ?>
-                                <li>
-                                <b>Image element:</b> <?php var_dump($element)?>
-                                </li>
-                            <?php } ?>
+                                    <?php if ($element['type'] == 'image') { ?>
+                                        <li>
+                                        <b>Image element:</b> <a href="<?php echo $serviceHost . $element['value']?>">image</a>
+                                        </li>
+                                    <?php } ?>
 
-                        <?php } ?>
-                    </ul>
-                </li>
+                                <?php } ?>
+                            </ul>
+                        </li>
+                    <?php } ?>
                 <?php } ?>
             </ul>
         </li>
-
+        <hr>
+        <?php } ?>
     <?php } ?>
     </ol>
-
-
-    <?php include('logoutGroup.php')?>
-
 </div><!--END centered-->
 
 <?php include('footer.php')?>
