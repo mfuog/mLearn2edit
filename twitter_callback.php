@@ -30,11 +30,54 @@ if (isset($_GET['oauth_token'])) {
 if (isset($_SESSION['twitter_access_token'])) {
     $user = $twitter->get('account/verify_credentials');
     printf('%s, you are logged in as an %s (<i>via Twitter</i>)', $user->name, $_SESSION['user_role']);
-}?>
+}
+
+# commonly used mlearn4web URLs
+$serviceHost = "http://celtest1.lnu.se:3030";
+$baseUrlAPI = $serviceHost . "/mlearn4web";
+
+# Retrieve all datasets
+$datasetsRequest = $baseUrlAPI . "/getalldata";
+$datasets = trim(file_get_contents($datasetsRequest));
+$datasets = json_decode($datasets, true);
+?>
+
 
 <?php include('header.php')?>
 
-<div id="logout" class ="centered">
+<div class ="centered">
+    <ol>
+    <?php foreach($datasets as $dataset) {
+        $scenarioRequest = $baseUrlAPI . "/get/" . $dataset['scenarioId'];
+        $scenario = json_decode(trim(file_get_contents($scenarioRequest)), true);?>
+
+        <li>
+            <b>Group name: </b> <?php echo $dataset['groupname'] ?><br>
+            <b>From scenario: </b><?php echo $scenario['title'] ?><br>
+            <b>Submitted data:</b>
+            <ul>
+                <?php foreach($dataset['data'] as $key=>$screen) { ?>
+                <li>
+                    <b><?php echo $key ?>:</b>
+                    <ul>
+                        <?php foreach($screen as $element) { ?>
+
+                            <?php if ($element['type'] == 'image') { ?>
+                                <li>
+                                <b>Image element:</b> <?php var_dump($element)?>
+                                </li>
+                            <?php } ?>
+
+                        <?php } ?>
+                    </ul>
+                </li>
+                <?php } ?>
+            </ul>
+        </li>
+
+    <?php } ?>
+    </ol>
+
 
     <?php include('logoutGroup.php')?>
 
