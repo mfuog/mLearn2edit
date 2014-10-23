@@ -55,12 +55,13 @@ if(isset($_SESSION['fb_session'])) {
 $serviceHost = "http://celtest1.lnu.se:3030";
 $baseUrlAPI = $serviceHost . "/mlearn4web";
 
-# Retrieve all datasets
-$datasetsRequest = $baseUrlAPI . "/getalldata";
-$datasets = trim(file_get_contents($datasetsRequest));
-$datasets = json_decode($datasets, true);
-
-
+# No need to retrieve datasets if form for group name retrieval is active
+if(isset($_GET['groupname'])) {
+    # Retrieve all datasets
+    $datasetsRequest = $baseUrlAPI . "/getalldata";
+    $datasets = trim(file_get_contents($datasetsRequest));
+    $datasets = json_decode($datasets, true);
+}
 
 ?>
 
