@@ -18,7 +18,7 @@
     </div>
     <div class="panel-body">
         <small>
-            <b>Assignment 3</b>, Fall Term 2014, Corinna Breitinger and Myrtha Fuog<br>
+            <b>Assignment 3</b>, Fall Term 2014, Corinna Breitfuß and Myrtha Fuog<br>
         </small>
     </div>
 </div>
