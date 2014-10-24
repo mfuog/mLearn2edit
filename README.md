@@ -7,4 +7,4 @@ This is a university assignment for the course **4ME102 - Foundations of Computa
 #####_Assignment 3_: System Extensibility and Web APIs
 _Fall Term 2014_
 
-_by Corinna Breitling and Myrtha Fuog_
+_by Corinna Breitinger and Myrtha Fuog_
