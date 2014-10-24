@@ -12,6 +12,7 @@ $logoutURL = $baseURL . '/index.php?logout';
 
 if (isset($_SESSION['twitter_access_token'])) {
     printf('%s, you are logged in as an %s (<i>via Twitter</i>)', $_SESSION['user_name'], $_SESSION['user_role']);
+    $imageListURL = $baseURL . '/twitter_callback.php';
 } else {
     # if the access token has expired, logout to acquire a new one by enforcing a new sign-in
     header('Location: ' . filter_var($logoutURL, FILTER_SANITIZE_URL) . '&expired');
@@ -42,7 +43,7 @@ if(isset($_POST['url'])) {
 
     <div id="content" class ="centered">
         <?php include('logoutGroup.php')?>
-        <a href="<?php echo $_SERVER['HTTP_REFERER'] ?>" class="btn btn-default pull-right"><span class="glyphicon glyphicon-chevron-left"></span>Back</a>
+        <a href="<?php echo $imageListURL ?>" class="btn btn-default pull-right"><span class="glyphicon glyphicon-chevron-left"></span>Back</a>
 
         <h3>Image manipulation</h3>
         <div class="well">
