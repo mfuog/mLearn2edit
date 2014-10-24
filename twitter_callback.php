@@ -71,7 +71,8 @@ $datasets = json_decode($datasets, true);
 
                                     <?php if ($element['type'] == 'image') { ?>
                                         <li>
-                                        <b>Image element:</b> <a href="<?php echo $serviceHost . $element['value']?>">image</a>
+                                        <b>Image:</b>
+                                        <a href="<?php echo $baseURL?>/editImage.php?imageURL=<?php echo $serviceHost . $element['value']?>" class="btn btn-default btn-xs">click to manipulate</a>
                                         </li>
                                     <?php } ?>
 
