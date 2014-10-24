@@ -42,6 +42,8 @@ if(isset($_POST['url'])) {
 
     <div id="content" class ="centered">
         <?php include('logoutGroup.php')?>
+        <a href="<?php echo $_SERVER['HTTP_REFERER'] ?>" class="btn btn-default pull-right"><span class="glyphicon glyphicon-chevron-left"></span>Back</a>
+
         <h3>Image manipulation</h3>
         <div class="well">
             <ol>

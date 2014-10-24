@@ -32,6 +32,10 @@ h1 {
     width: 400px;
 }
 
+#logout {
+    margin-left: 5px;
+}
+
 #content {
     width: 600px;
 }
