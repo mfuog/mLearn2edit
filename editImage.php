@@ -1,23 +1,24 @@
 <?php
 $session = session_start();
 
-##
-# Authentication
-##
-
 # Set commonly used URLs
 $baseURL = 'http://' . $_SERVER['HTTP_HOST'] . dirname($_SERVER['SCRIPT_NAME']);
 $homeURL = $baseURL . '/' . basename($_SERVER['SCRIPT_NAME']);
 $logoutURL = $baseURL . '/index.php?logout';
 
-if (isset($_SESSION['twitter_access_token'])) {
+
+##
+# Authentication
+##
+
+if ($_SESSION['user_role'] == 'admin') {
     printf('%s, you are logged in as an %s (<i>via Twitter</i>)', $_SESSION['user_name'], $_SESSION['user_role']);
     $imageListURL = $baseURL . '/twitter_callback.php';
-} else if (isset($_SESSION['google_access_token'])) {
-    printf('%s, you are logged in as an %s (<i>via Google</i>)', $_SESSION['user_name'], $_SESSION['user_role']);
+} else if ($_SESSION['user_role'] == 'teacher') {
+    printf('%s, you are logged in as a %s (<i>via Google</i>)', $_SESSION['user_name'], $_SESSION['user_role']);
     $imageListURL = $baseURL . '/google_callback.php';
-} else if (isset($_SESSION['fb_session'])) {
-    printf('%s, you are logged in as an %s (<i>via Facebook</i>)', $_SESSION['user_name'], $_SESSION['user_role']);
+} else if ($_SESSION['user_role'] == 'student') {
+    printf('%s, you are logged in as a %s (<i>via Facebook</i>)', $_SESSION['user_name'], $_SESSION['user_role']);
     $imageListURL = $baseURL . '/fb_callback.php';
 } else {
     # if the access token has expired, logout to acquire a new one by enforcing a new sign-in
