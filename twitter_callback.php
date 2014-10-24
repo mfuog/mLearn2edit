@@ -69,10 +69,12 @@ $datasets = json_decode($datasets, true);
                             <ul>
                                 <?php foreach($screen as $element) { ?>
 
-                                    <?php if ($element['type'] == 'image') { ?>
+                                    <?php if ($element['type'] == 'image') {
+                                        $editImageURL = $baseURL . '/editImage.php?imageURL=' . $serviceHost . $element['value'];
+                                        ?>
                                         <li>
-                                        <b>Image:</b>
-                                        <a href="<?php echo $baseURL?>/editImage.php?imageURL=<?php echo $serviceHost . $element['value']?>" class="btn btn-default btn-xs">click to manipulate</a>
+                                            <b>Image:</b>
+                                            <a href="<?php echo $editImageURL ?>" class="btn btn-default btn-xs">click to manipulate</a>
                                         </li>
                                     <?php } ?>
 
