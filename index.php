@@ -29,6 +29,7 @@ if (isset($_REQUEST['logout']) || isset($_REQUEST['expired'])) {
     unset($_SESSION['FBRLH_state']);
     unset($_SESSION['fb_session']);
     unset($_SESSION['user_role']);
+    unset($_SESSION['user_name']);
     if (isset($_SESSION) && !empty($_SESSION)) {
         $loggedOut = true;
     }

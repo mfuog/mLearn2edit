@@ -54,8 +54,8 @@ if ($googleClient->getAccessToken()) {
         $_SESSION['user_role'] = "teacher"; # assign user role after login
 
         $plus = new Google_Service_Plus($googleClient);
-        $user = $plus->people->get('me');
-        printf('%s, you are logged in as a %s (<i>via Google</i>)', $user->displayName, $_SESSION['user_role']);
+        $_SESSION['user_name'] = $plus->people->get('me')->displayName;
+        printf('%s, you are logged in as a %s (<i>via Google</i>)', $_SESSION['user_name'], $_SESSION['user_role']);
     }
 }
 

@@ -24,7 +24,6 @@ try {
     $session = $facebookHelper->getSessionFromRedirect();
     if (!isset($_SESSION['fb_session'])){
         $_SESSION['fb_session']  = $session;
-        $_SESSION['user_role'] = "student"; # assign user role after login
     }
 } catch(FacebookRequestException $ex) {
     // When Facebook returns an error
@@ -38,9 +37,10 @@ if(isset($_SESSION['fb_session'])) {
     $request = new FacebookRequest($_SESSION['fb_session'], 'GET', '/me');
     $response = $request->execute();
     $graphObject = $response->getGraphObject();
-    $userName= $graphObject->getProperty('first_name');
+    $_SESSION['user_name'] = $graphObject->getProperty('first_name');
+    $_SESSION['user_role'] = "student"; # assign user role after login
 
-    printf('%s, you are logged in as a %s (<i>via Facebook</i>)', $userName, $_SESSION['user_role']);
+    printf('%s, you are logged in as a %s (<i>via Facebook</i>)', $_SESSION['user_name'], $_SESSION['user_role']);
 
     # Provide a logout URL
     $logoutURL = $baseURL . '/index.php?logout';
