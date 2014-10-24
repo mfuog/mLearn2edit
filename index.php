@@ -94,21 +94,21 @@ include('header.php');?>
     <ul class="list-group">
         <li class="list-group-item">
             <span class="pull-left">
-                Login as an administrator:
+                Login as an <span class="alert-info">admin</span>:
             </span>
             <a class="btn btn-twitter pull-right" href="<?php echo $twitterAuthURL; ?>"><i class="fa fa-twitter"></i> | Connect with Twitter</a>
             <br><br>
         </li>
         <li class="list-group-item">
             <span class="pull-left">
-                To login as a teacher
+                To login as a <span class="alert-warning">teacher</span>
             </span>
                 <a class="btn btn-google-plus pull-right" href="<?php echo $googleAuthURL; ?>"><i class="fa fa-google"></i> | Connect with Google+</a>
             <br><br>
         </li>
         <li class="list-group-item">
             <span class="pull-left">
-                Login as a student:
+                Login as a <span class="alert-success">student</span>:
             </span>
             <a class="btn btn-facebook pull-right" href="<?php echo $facebookAuthURL; ?>"><i class="fa fa-facebook"></i> | Connect with Facebook</a>
             <br><br>
