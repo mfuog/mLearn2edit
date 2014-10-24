@@ -5,7 +5,7 @@ require_once __DIR__ . '/config.php';
 if ( session_id() == '' ) {
     $session = session_start();
 }
-/** Setup: Set commonly used, relative URLs */
+# Commonly used URLs
 $baseURL = 'http://' . $_SERVER['HTTP_HOST'] . dirname($_SERVER['SCRIPT_NAME']);
 $homeURL = $baseURL . '/' . basename($_SERVER['SCRIPT_NAME']);
 $logoutURL = $baseURL . '/index.php?logout';
