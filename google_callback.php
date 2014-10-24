@@ -127,9 +127,12 @@ if(isset($_GET['teacherID'])) {
                                             <ul>
                                                 <?php foreach($screen as $element) { ?>
 
-                                                    <?php if ($element['type'] == 'image') { ?>
+                                                    <?php if ($element['type'] == 'image') {
+                                                        $editImageURL = $baseURL . '/editImage.php?imageURL=' . $serviceHost . $element['value'];
+                                                        ?>
                                                         <li>
-                                                            <b>Image element:</b> <a href="<?php echo $serviceHost . $element['value']?>">image</a>
+                                                            <b>Image:</b>
+                                                            <a href="<?php echo $editImageURL ?>" class="btn btn-default btn-xs">click to manipulate</a>
                                                         </li>
                                                     <?php } ?>
 
