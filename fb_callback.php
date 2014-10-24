@@ -61,10 +61,7 @@ if(isset($_GET['groupname'])) {
     $datasetsRequest = $baseUrlAPI . "/getalldata";
     $datasets = trim(file_get_contents($datasetsRequest));
     $datasets = json_decode($datasets, true);
-}
-
-?>
-
+}?>
 
 <?php include('header.php')?>
 
@@ -119,9 +116,12 @@ if(isset($_GET['groupname'])) {
                                         <ul>
                                             <?php foreach($screen as $element) { ?>
 
-                                                <?php if ($element['type'] == 'image') { ?>
+                                                <?php if ($element['type'] == 'image') {
+                                                    $editImageURL = $baseURL . '/editImage.php?imageURL=' . $serviceHost . $element['value'];
+                                                    ?>
                                                     <li>
-                                                        <b>Image element:</b> <a href="<?php echo $serviceHost . $element['value']?>">image</a>
+                                                        <b>Image:</b>
+                                                        <a href="<?php echo $editImageURL ?>" class="btn btn-default btn-xs">click to manipulate</a>
                                                     </li>
                                                 <?php } ?>
 
