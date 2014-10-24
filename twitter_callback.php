@@ -46,9 +46,9 @@ $datasets = json_decode($datasets, true);
 <?php include('header.php')?>
 
 <div id="content" class ="centered">
+    <?php include('logoutGroup.php')?>
     <h3>Saved image data for all scenarios <span class="badge alert-info"><?php echo $_SESSION['user_role'] ?></span></h3>
     <div class="well">Below, all datasets that contain any images are listed.</div>
-    <?php include('logoutGroup.php')?>
     <ol>
     <?php foreach($datasets as $dataset) {
         $scenarioRequest = $baseUrlAPI . "/get/" . $dataset['scenarioId'];
