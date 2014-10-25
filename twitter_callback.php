@@ -40,6 +40,13 @@ $baseUrlAPI = $serviceHost . "/mlearn4web";
 $datasetsRequest = $baseUrlAPI . "/getalldata";
 $datasets = trim(file_get_contents($datasetsRequest));
 $datasets = json_decode($datasets, true);
+
+# Unset values previously used by editImage.php
+unset($_SESSION['scenarioID']);
+unset($_SESSION['datasetID']);
+unset($_SESSION['oldImagePath']);
+unset($_SESSION['oldImageURL']);
+unset($_SESSION['newImageData']);
 ?>
 
 
@@ -61,20 +68,24 @@ $datasets = json_decode($datasets, true);
             <b>Group: </b> <?php echo $dataset['groupname'] ?><br>
             <b>Submitted data:</b>
             <ul>
-                <?php foreach($dataset['data'] as $key=>$screen) {
+                <?php foreach($dataset['data'] as $screenKey=>$screen) {
                     # only display a screen, if it contains any images
                     if (strpos(json_encode($screen), "image") !== false ) {?>
                         <li>
-                            <b><?php echo $key ?>:</b>
+                            <b><?php echo $screenKey ?>:</b>
                             <ul>
                                 <?php foreach($screen as $element) { ?>
 
                                     <?php if ($element['type'] == 'image') {
-                                        $editImageURL = $baseURL . '/editImage.php?imageURL=' . $serviceHost . $element['value'];
+                                        # Remember params for saving the image in updateData.php (after the edit process).
+                                        $getParams = '?scenarioID=' . $dataset['scenarioId']
+                                                    .'&datasetID=' . $dataset['_id']
+                                                    .'&oldImagePath=' . $element['value']
+                                                    .'&oldImageURL=' . $serviceHost . $element['value'];
                                         ?>
                                         <li>
                                             <b>Image:</b>
-                                            <a href="<?php echo $editImageURL ?>" class="btn btn-default btn-xs">click to manipulate</a>
+                                            <a href="<?php echo $baseURL . '/editImage.php' . $getParams?>" class="btn btn-default btn-xs">click to manipulate</a>
                                         </li>
                                     <?php } ?>
 

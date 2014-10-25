@@ -35,6 +35,11 @@ if (isset($_REQUEST['logout']) || isset($_REQUEST['expired'])) {
     }
 }
 
+# Unset possibly remaining values for editImage.php
+unset($_SESSION['scenarioID']);
+unset($_SESSION['datasetID']);
+unset($_SESSION['oldImagePath']);
+
 # Google setup
 $googleClient = new Google_Client();
 $googleClient->setClientId(GOOGLE_CLIENT_ID);
