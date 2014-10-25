@@ -55,42 +55,50 @@ if(isset($_SESSION['fb_session'])) {
 $serviceHost = "http://celtest1.lnu.se:3030";
 $baseUrlAPI = $serviceHost . "/mlearn4web";
 
-# No need to retrieve datasets if form for group name retrieval is active
-if(isset($_GET['groupname'])) {
-    # Retrieve all datasets
-    $datasetsRequest = $baseUrlAPI . "/getalldata";
-    $datasets = trim(file_get_contents($datasetsRequest));
-    $datasets = json_decode($datasets, true);
-}?>
+
+# Retrieve all datasets
+$datasetsRequest = $baseUrlAPI . "/getalldata";
+$datasets = trim(file_get_contents($datasetsRequest));
+$datasets = json_decode($datasets, true);
+# Retrieve all group names
+$groupNames = getGroupNames($datasets);
+?>
 
 <?php include('header.php')?>
 
     <div id="content" class ="centered">
         <?php include('logoutGroup.php')?>
-        <h3>Saved image data <span class="badge alert-success"><?php echo $_SESSION['user_role'] ?></span></h3>
 
-        <?php if(!isset($_GET['groupname'])) { ?>
-            <div class="well">Enter your group name in order to list image containing datasets submitted by your group.</div>
-
-            <form method="GET" role="search">
-            <button type="submit" class="btn btn-primary pull-right">Proceed</button>
-            <div class="form-group">
-                <div class="input-group">
-                    <span class="input-group-addon">Group name:</span>
-                    <input class="form-control" type="search" id="groupname" name="groupname" placeholder="e.g. Steve & David">
-                </div>
-            </div>
-
-        </form>
-        <hr>
-        <?php } else { ?>
-
-        <div class="well">Showing image containing datasets that:
-            <ul>
-                <li>were submitted by group <i><?php echo( !empty($_GET['groupname']) ? $_GET['groupname'] :  '-') ?></i></li>
-                <li>originate from a scenario tagged <i>[allStudents]</i></li>
+        <!--dropdown-->
+        <div class="dropdown pull-right">
+            <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown">
+                Select your group
+                <span class="caret"></span>
+            </button>
+            <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1">
+                <li role="presentation"><a role="menuitem" tabindex="-1" href="<?php echo $homeURL ?>"><i>none</i></a></li>
+                <?php foreach($groupNames as $groupName) {?>
+                    <li role="presentation"><a role="menuitem" tabindex="-1" href="?groupname=<?php echo $groupName?>"><?php echo $groupName?></a></li>
+                <?php }?>
             </ul>
         </div>
+
+        <!--title-->
+        <h3>Saved image data <span class="badge alert-success"><?php echo $_SESSION['user_role'] ?></span></h3>
+        <hr>
+
+        <!--describtion-->
+        <div class="well">
+            Showing image-containing datasets that:
+            <ul>
+                <?php if(isset($_GET['groupname'])){ ?>
+                <li>were submitted by group <span class="alert-success"><?php echo( !empty($_GET['groupname']) ? $_GET['groupname'] :  '-') ?></span></li>
+                <?php } ?>
+                <li>originate from a scenario tagged <span class="alert-success"><b>[allStudents]</b></span></li>
+            </ul>
+        </div>
+
+        <!--dataset listing-->
         <ol>
             <?php foreach($datasets as $dataset) {
                 $scenarioRequest = $baseUrlAPI . "/get/" . $dataset['scenarioId'];
@@ -101,11 +109,20 @@ if(isset($_GET['groupname'])) {
                 # Only display a dataset, if it contains any images...
                 if (strpos($datasetString, "image") !== false
                     # ...and was authored by the group or made public for all students
-                    && ($dataset['groupname'] == $_GET['groupname'] || strpos($scenarioString, "[allStudents]"))) {?>
+                    && ((isset($_GET['groupname']) && $dataset['groupname'] == $_GET['groupname'])|| strpos($scenarioString, "[allStudents]"))) {?>
 
                     <li>
-                        <h4><b>For scenario: </b><?php echo $scenario['title'] ?></h4>
-                        <b>Group: </b> <?php echo $dataset['groupname'] ?><br>
+                        <h4>
+                            <b>Scenario: </b><?php echo $scenario['title'] ?>
+                            <?php if (strpos($scenarioString, "[allStudents]")){?>
+                                <span class="badge alert-success">[allStudents]</span>
+                            <?php } ?>
+                        </h4>
+                        <?php if (isset($_GET['groupname']) && $dataset['groupname'] == $_GET['groupname']) { ?>
+                            <b>Group: </b> <span class="alert-success"><?php echo $dataset['groupname'] ?></span><br>
+                        <?php } else { ?>
+                            <b>Group: </b> <?php echo $dataset['groupname'] ?><br>
+                        <?php } ?>
                         <b>Submitted data:</b>
                         <ul>
                             <?php foreach($dataset['data'] as $key=>$screen) {
@@ -136,7 +153,18 @@ if(isset($_GET['groupname'])) {
                 <?php } ?>
             <?php } ?>
         </ol>
-        <?php } ?>
     </div><!--END centered-->
 
 <?php include('footer.php')?>
+
+<?php
+function getGroupNames($datasets){
+    $groupNames = array();
+    foreach ($datasets as $dataset) {
+        if (isset($dataset['groupname'])) {
+            $groupNames[] = $dataset['groupname'];
+        }
+    }
+    return array_unique($groupNames);
+}
+?>
