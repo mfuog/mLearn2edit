@@ -63,14 +63,17 @@ if ($googleClient->getAccessToken()) {
 $serviceHost = "http://celtest1.lnu.se:3030";
 $baseUrlAPI = $serviceHost . "/mlearn4web";
 
-# No need to retrieve datasets if form for teacher ID retrieval is active
-if(isset($_GET['teacherID'])) {
-    # Retrieve all datasets
-    $datasetsRequest = $baseUrlAPI . "/getalldata";
-    $datasets = trim(file_get_contents($datasetsRequest));
-    $datasets = json_decode($datasets, true);
-}
+# Retrieve all datasets
+$datasetsRequest = $baseUrlAPI . "/getalldata";
+$datasets = trim(file_get_contents($datasetsRequest));
+$datasets = json_decode($datasets, true);
 
+# Retrieve all scenarios
+$scenariosRequest = $baseUrlAPI . "/getall";
+$scenarios = trim(file_get_contents($scenariosRequest));
+$scenarios = json_decode($scenarios, true);
+# Retrieve all user IDs
+$userIDs = getAllUserIDs($scenarios);
 ?>
 
 
@@ -79,75 +82,98 @@ if(isset($_GET['teacherID'])) {
 
     <div id="content" class ="centered">
         <?php include('logoutGroup.php')?>
+
+        <!--dropdown-->
+        <div class="dropdown pull-right">
+            <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown">
+                Select your user ID
+                <span class="caret"></span>
+            </button>
+            <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1">
+                <li role="presentation"><a role="menuitem" tabindex="-1" href="<?php echo $homeURL ?>"><i>none</i></a></li>
+                <?php foreach($userIDs as $id) {?>
+                    <li role="presentation"><a role="menuitem" tabindex="-1" href="?teacherID=<?php echo $id?>"><?php echo $id?></a></li>
+                <?php }?>
+            </ul>
+        </div>
+
+        <!--title-->
         <h3>Saved image data <span class="badge alert-warning"><?php echo $_SESSION['user_role'] ?></span></h3>
 
-        <?php if(!isset($_GET['teacherID'])) { ?>
-            <div class="well">Enter your <i>mlearn4web</i> user ID in order to list image containing datasets that were committed for scenarios created by you.</div>
-
-            <form method="GET" role="search">
-                <button type="submit" class="btn btn-primary pull-right">Proceed</button>
-                <div class="form-group">
-                    <div class="input-group">
-                        <span class="input-group-addon">Teacher's ID:</span>
-                        <input class="form-control" type="search" id="teacherID" name="teacherID" placeholder="e.g. 544510f3f70096dc60645672">
-                    </div>
-                </div>
-
-            </form>
-            <hr>
-        <?php } else { ?>
-            <div class="well">Showing image containing datasets that:
-                <ul>
-                    <li>belong to scenarios created by you <i>(user ID: <?php echo $_GET['teacherID'] ?>)</i></li>
-                    <li>originate from a scenario tagged <i>[allTeachers]</i></li>
-                </ul>
-            </div>
-            <ol>
-                <?php foreach($datasets as $dataset) {
-                    $scenarioRequest = $baseUrlAPI . "/get/" . $dataset['scenarioId'];
-                    $scenarioString = trim(file_get_contents($scenarioRequest));
-                    $scenario = json_decode($scenarioString, true);
-                    $datasetString = json_encode($dataset);
-
-                    # Only display a dataset, if it contains any images...
-                    if (strpos($datasetString, "image") !== false
-                        # ...and if the scenario was authored by the user or made public for all teachers
-                        && ($scenario['user'] == $_GET['teacherID'] || strpos($scenarioString, "[allTeachers]"))) {?>
-
-                        <li>
-                            <h4><b>Scenario: </b><?php echo $scenario['title'] ?></h4>
-                            <b>Group: </b> <?php echo $dataset['groupname'] ?><br>
-                            <b>Submitted data:</b>
-                            <ul>
-                                <?php foreach($dataset['data'] as $key=>$screen) {
-                                    # only display a screen, if it contains any images
-                                    if (strpos(json_encode($screen), "image") !== false ) {?>
-                                        <li>
-                                            <b><?php echo $key ?>:</b>
-                                            <ul>
-                                                <?php foreach($screen as $element) { ?>
-
-                                                    <?php if ($element['type'] == 'image') {
-                                                        $editImageURL = $baseURL . '/editImage.php?imageURL=' . $serviceHost . $element['value'];
-                                                        ?>
-                                                        <li>
-                                                            <b>Image:</b>
-                                                            <a href="<?php echo $editImageURL ?>" class="btn btn-default btn-xs">click to manipulate</a>
-                                                        </li>
-                                                    <?php } ?>
-
-                                                <?php } ?>
-                                            </ul>
-                                        </li>
-                                    <?php } ?>
-                                <?php } ?>
-                            </ul>
-                        </li>
-                        <hr>
-                    <?php } ?>
+        <!--describtion-->
+        <div class="well">
+            Showing image-containing datasets that:
+            <ul>
+                <?php if(isset($_GET['teacherID'])){ ?>
+                <li>belong to scenarios created by you <span class="alert-warning">(user ID: <?php echo $_GET['teacherID'] ?>)</span></li>
                 <?php } ?>
-            </ol>
-        <?php } ?>
+                <li>originate from a scenario tagged <span class="badge alert-warning">[allTeachers]</span></li>
+            </ul>
+        </div>
+
+        <!--dataset listing-->
+        <ol>
+            <?php foreach($datasets as $dataset) {
+                $scenarioRequest = $baseUrlAPI . "/get/" . $dataset['scenarioId'];
+                $scenarioString = trim(file_get_contents($scenarioRequest));
+                $scenario = json_decode($scenarioString, true);
+                $datasetString = json_encode($dataset);
+
+                # Only display a dataset, if it contains any images...
+                if (strpos($datasetString, "image") !== false
+                    # ...and if the scenario was authored by the user or made public for all teachers
+                    && ((isset($_GET['teacherID']) && $scenario['user'] == $_GET['teacherID']) || strpos($scenarioString, "[allTeachers]"))) {?>
+
+                    <li>
+                        <h4>
+                            <b>Scenario: </b><?php echo $scenario['title'] ?>
+                            <?php if (strpos($scenarioString, "[allTeachers]")){?>
+                                <span class="badge alert-warning">[allTeachers]</span>
+                            <?php } ?>
+                        </h4>
+
+                        <b>Group: </b> <?php echo $dataset['groupname'] ?><br>
+                        <b>Submitted data:</b>
+                        <ul>
+                            <?php foreach($dataset['data'] as $key=>$screen) {
+                                # only display a screen, if it contains any images
+                                if (strpos(json_encode($screen), "image") !== false ) {?>
+                                    <li>
+                                        <b><?php echo $key ?>:</b>
+                                        <ul>
+                                            <?php foreach($screen as $element) { ?>
+
+                                                <?php if ($element['type'] == 'image') {
+                                                    $editImageURL = $baseURL . '/editImage.php?imageURL=' . $serviceHost . $element['value'];
+                                                    ?>
+                                                    <li>
+                                                        <b>Image:</b>
+                                                        <a href="<?php echo $editImageURL ?>" class="btn btn-default btn-xs">click to manipulate</a>
+                                                    </li>
+                                                <?php } ?>
+
+                                            <?php } ?>
+                                        </ul>
+                                    </li>
+                                <?php } ?>
+                            <?php } ?>
+                        </ul>
+                    </li>
+                    <hr>
+                <?php } ?>
+            <?php } ?>
+        </ol>
     </div><!--END centered-->
 
 <?php include('footer.php')?>
+
+<?php
+function getAllUserIDs($scenarios){
+    $userIDs = array();
+    foreach ($scenarios as $scenario) {
+        $userIDs[] = $scenario['user'];
+    }
+    return $userIDs;
+}
+
+?>
