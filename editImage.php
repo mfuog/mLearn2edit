@@ -71,7 +71,7 @@ if(isset($_POST['url'])) {
             <h4>Edited image:</h4>
             <button class="btn btn-default" type="submit" form="sumoEdit" value="Submit">Edit again</button>
             <a href="updateData.php" class="btn btn-default" data-toggle="tooltip" title="Overwrite original image with changes">Save</a>
-            <a href="#" class="btn btn-default" disabled>Save as copy</a>
+            <a href="copyData.php" class="btn btn-default" data-toggle="tooltip" title="Preserve original image and save a copy">Save as copy</a>
         <?php } else if(isset($_GET['oldImageURL'])) { ?>
             <h4>Original image:</h4>
             <button class="btn btn-default" type="submit" form="sumoEdit" value="Submit">Edit</button>
