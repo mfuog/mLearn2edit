@@ -10,6 +10,10 @@ $baseURL = 'http://' . $_SERVER['HTTP_HOST'] . dirname($_SERVER['SCRIPT_NAME']);
 $homeURL = $baseURL . '/' . basename($_SERVER['SCRIPT_NAME']);
 $logoutURL = $baseURL . '/index.php?logout';
 
+##
+# Google Authentication
+##
+
 # Google client setup
 $googleClient = new Google_Client();
 $googleClient->setClientId(GOOGLE_CLIENT_ID);
@@ -17,7 +21,6 @@ $googleClient->setClientSecret(GOOGLE_CLIENT_SECRET);
 $googleClient->setDeveloperKey(GOOGLE_API_KEY);
 $googleClient->setRedirectUri($homeURL);
 $googleClient->addScope("https://www.googleapis.com/auth/userinfo.profile");
-
 
 # With a non-expired access token (saved in the session), we can make requests, else we generate an authentication URL.
 if (isset($_SESSION['google_access_token'])) {
@@ -59,6 +62,10 @@ if ($googleClient->getAccessToken()) {
     }
 }
 
+##
+# Manage content
+##
+
 # commonly used mlearn4web URLs
 $serviceHost = "http://celtest1.lnu.se:3030";
 $baseUrlAPI = $serviceHost . "/mlearn4web";
@@ -74,6 +81,13 @@ $scenarios = trim(file_get_contents($scenariosRequest));
 $scenarios = json_decode($scenarios, true);
 # Retrieve all user IDs
 $userIDs = getAllUserIDs($scenarios);
+
+# Unset values previously used by editImage.php
+unset($_SESSION['scenarioID']);
+unset($_SESSION['datasetID']);
+unset($_SESSION['oldImagePath']);
+unset($_SESSION['oldImageURL']);
+unset($_SESSION['newImageData']);
 ?>
 
 
@@ -135,20 +149,24 @@ $userIDs = getAllUserIDs($scenarios);
                         <b>Group: </b> <?php echo $dataset['groupname'] ?><br>
                         <b>Submitted data:</b>
                         <ul>
-                            <?php foreach($dataset['data'] as $key=>$screen) {
+                            <?php foreach($dataset['data'] as $screenKey=>$screen) {
                                 # only display a screen, if it contains any images
                                 if (strpos(json_encode($screen), "image") !== false ) {?>
                                     <li>
-                                        <b><?php echo $key ?>:</b>
+                                        <b><?php echo $screenKey ?>:</b>
                                         <ul>
                                             <?php foreach($screen as $element) { ?>
 
                                                 <?php if ($element['type'] == 'image') {
-                                                    $editImageURL = $baseURL . '/editImage.php?imageURL=' . $serviceHost . $element['value'];
+                                                    # Remember params for saving the image in updateData.php (after the edit process).
+                                                    $getParams = '?scenarioID=' . $dataset['scenarioId']
+                                                        .'&datasetID=' . $dataset['_id']
+                                                        .'&oldImagePath=' . $element['value']
+                                                        .'&oldImageURL=' . $serviceHost . $element['value'];
                                                     ?>
                                                     <li>
                                                         <b>Image:</b>
-                                                        <a href="<?php echo $editImageURL ?>" class="btn btn-default btn-xs">click to manipulate</a>
+                                                        <a href="<?php echo $baseURL . '/editImage.php' . $getParams ?>" class="btn btn-default btn-xs">click to manipulate</a>
                                                     </li>
                                                 <?php } ?>
 
