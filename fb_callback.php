@@ -14,7 +14,11 @@ $baseURL = 'http://' . $_SERVER['HTTP_HOST'] . dirname($_SERVER['SCRIPT_NAME']);
 $homeURL = $baseURL . '/' . basename($_SERVER['SCRIPT_NAME']);
 $logoutURL = $baseURL . '/index.php?logout';
 
-# Facebook setup
+##
+# Facebook Authentication
+##
+
+# Setup
 FacebookSession::setDefaultApplication(FACEBOOK_APP_KEY, FACEBOOK_APP_SECRET);
 FacebookSession::enableAppSecretProof(false); # avoid error: 'Invalid appsecret_proof provided'
 $facebookHelper = new FacebookRedirectLoginHelper($homeURL);
@@ -50,11 +54,13 @@ if(isset($_SESSION['fb_session'])) {
     $facebookAuthURL = $facebookHelper->getLoginUrl();
 }
 
+##
+# Manage content
+##
 
-# commonly used mlearn4web URLs
+# Commonly used mlearn4web URLs
 $serviceHost = "http://celtest1.lnu.se:3030";
 $baseUrlAPI = $serviceHost . "/mlearn4web";
-
 
 # Retrieve all datasets
 $datasetsRequest = $baseUrlAPI . "/getalldata";
@@ -62,6 +68,13 @@ $datasets = trim(file_get_contents($datasetsRequest));
 $datasets = json_decode($datasets, true);
 # Retrieve all group names
 $groupNames = getGroupNames($datasets);
+
+# Unset values previously used by editImage.php
+unset($_SESSION['scenarioID']);
+unset($_SESSION['datasetID']);
+unset($_SESSION['oldImagePath']);
+unset($_SESSION['oldImageURL']);
+unset($_SESSION['newImageData']);
 ?>
 
 <?php include('header.php')?>
@@ -134,11 +147,15 @@ $groupNames = getGroupNames($datasets);
                                             <?php foreach($screen as $element) { ?>
 
                                                 <?php if ($element['type'] == 'image') {
-                                                    $editImageURL = $baseURL . '/editImage.php?imageURL=' . $serviceHost . $element['value'];
+                                                    # Remember params for saving the image in updateData.php (after the edit process).
+                                                    $getParams = '?scenarioID=' . $dataset['scenarioId']
+                                                        .'&datasetID=' . $dataset['_id']
+                                                        .'&oldImagePath=' . $element['value']
+                                                        .'&oldImageURL=' . $serviceHost . $element['value'];
                                                     ?>
                                                     <li>
                                                         <b>Image:</b>
-                                                        <a href="<?php echo $editImageURL ?>" class="btn btn-default btn-xs">click to manipulate</a>
+                                                        <a href="<?php echo $baseURL . '/editImage.php' . $getParams ?>" class="btn btn-default btn-xs">click to manipulate</a>
                                                     </li>
                                                 <?php } ?>
 
