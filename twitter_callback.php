@@ -53,13 +53,11 @@ $datasets = trim(file_get_contents($datasetsRequest));
 $datasets = json_decode($datasets, true);
 
 # Unset values previously used by editImage.php
-unset($_SESSION['scenarioID']);
 unset($_SESSION['datasetID']);
 unset($_SESSION['oldImagePath']);
 unset($_SESSION['oldImageURL']);
 unset($_SESSION['newImageData']);
 ?>
-
 
 <?php include('header.php')?>
 

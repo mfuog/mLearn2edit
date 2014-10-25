@@ -65,7 +65,6 @@ $datasets = json_decode($datasets, true);
 $groupNames = getGroupNames($datasets);
 
 # Unset values previously used by editImage.php
-unset($_SESSION['scenarioID']);
 unset($_SESSION['datasetID']);
 unset($_SESSION['oldImagePath']);
 unset($_SESSION['oldImageURL']);

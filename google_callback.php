@@ -78,7 +78,6 @@ $scenarios = json_decode($scenarios, true);
 $userIDs = getAllUserIDs($scenarios);
 
 # Unset values previously used by editImage.php
-unset($_SESSION['scenarioID']);
 unset($_SESSION['datasetID']);
 unset($_SESSION['oldImagePath']);
 unset($_SESSION['oldImageURL']);

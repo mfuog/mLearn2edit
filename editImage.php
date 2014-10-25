@@ -37,7 +37,6 @@ if(isset($_POST['url'])) {
 } else if (isset($_GET['oldImageURL'])) {
     # Check for the original image's URL
     $imageURL = $_GET['oldImageURL'];
-    $_SESSION['scenarioID'] = $_GET['scenarioID'];
     $_SESSION['datasetID'] = $_GET['datasetID'];
     $_SESSION['oldImagePath'] = $_GET['oldImagePath'];
 }?>
@@ -71,7 +70,7 @@ if(isset($_POST['url'])) {
         <?php if(isset($_POST['url'])){ ?>
             <h4>Edited image:</h4>
             <button class="btn btn-default" type="submit" form="sumoEdit" value="Submit">Edit again</button>
-            <a href="updateData.php" class="btn btn-default" >Overwrite original</a>
+            <a href="updateData.php" class="btn btn-default" data-toggle="tooltip" title="Overwrite original image with changes">Save</a>
             <a href="#" class="btn btn-default" disabled>Save as copy</a>
         <?php } else if(isset($_GET['oldImageURL'])) { ?>
             <h4>Original image:</h4>
