@@ -43,15 +43,10 @@ if(isset($_SESSION['fb_session'])) {
     $graphObject = $response->getGraphObject();
     $_SESSION['user_name'] = $graphObject->getProperty('first_name');
     $_SESSION['user_role'] = "student"; # assign user role after login
-
     printf('%s, you are logged in as a %s (<i>via Facebook</i>)', $_SESSION['user_name'], $_SESSION['user_role']);
-
-    # Provide a logout URL
-    $logoutURL = $baseURL . '/index.php?logout';
 } else {
-    $callbackURL = $homeURL . 'fb_callback.php';
-    $facebookHelper = new FacebookRedirectLoginHelper($callbackURL);
-    $facebookAuthURL = $facebookHelper->getLoginUrl();
+    # Not logged in: Return to home page
+    header('Location: ' . filter_var($logoutURL, FILTER_SANITIZE_URL) . '&expired');
 }
 
 ##
