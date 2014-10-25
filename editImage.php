@@ -20,8 +20,8 @@ if ($_SESSION['user_role'] == 'admin') {
     printf('%s, you are logged in as a %s (<i>via Facebook</i>)', $_SESSION['user_name'], $_SESSION['user_role']);
     $imageListURL = $baseURL . '/fb_callback.php';
 } else {
-    # if the access token has expired, logout to acquire a new one by enforcing a new sign-in
-    header('Location: ' . filter_var($logoutURL, FILTER_SANITIZE_URL) . '&expired');
+    # Not logged in: Return to home page
+    header('Location: ' . filter_var($logoutURL, FILTER_SANITIZE_URL) . '&prohibited');
 }
 
 ##
