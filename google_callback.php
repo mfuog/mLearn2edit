@@ -173,7 +173,6 @@ function getAllUserIDs($scenarios){
     foreach ($scenarios as $scenario) {
         $userIDs[] = $scenario['user'];
     }
-    return $userIDs;
+    return array_unique($userIDs);
 }
-
 ?>
