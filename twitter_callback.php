@@ -10,7 +10,11 @@ $baseURL = 'http://' . $_SERVER['HTTP_HOST'] . dirname($_SERVER['SCRIPT_NAME']);
 $homeURL = $baseURL . '/' . basename($_SERVER['SCRIPT_NAME']);
 $logoutURL = $baseURL . '/index.php?logout';
 
-# Twitter oauth: Exchange temporary for real access token
+##
+# Twitter Authentication
+##
+
+# Exchange temporary for real access token
 if (isset($_GET['oauth_token'])) {
 
     # use the user's previously stored temporary credentials here
@@ -31,6 +35,10 @@ if (isset($_GET['oauth_token'])) {
 if (isset($_SESSION['twitter_access_token'])) {
     printf('%s, you are logged in as an %s (<i>via Twitter</i>)', $_SESSION['user_name'], $_SESSION['user_role']);
 }
+
+##
+# Manage content
+##
 
 # commonly used mlearn4web URLs
 $serviceHost = "http://celtest1.lnu.se:3030";
@@ -85,7 +93,7 @@ unset($_SESSION['newImageData']);
                                         ?>
                                         <li>
                                             <b>Image:</b>
-                                            <a href="<?php echo $baseURL . '/editImage.php' . $getParams?>" class="btn btn-default btn-xs">click to manipulate</a>
+                                            <a href="<?php echo $baseURL . '/editImage.php' . $getParams ?>" class="btn btn-default btn-xs">click to manipulate</a>
                                         </li>
                                     <?php } ?>
 
