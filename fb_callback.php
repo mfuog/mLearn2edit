@@ -46,7 +46,7 @@ if(isset($_SESSION['fb_session'])) {
     printf('%s, you are logged in as a %s (<i>via Facebook</i>)', $_SESSION['user_name'], $_SESSION['user_role']);
 } else {
     # Not logged in: Return to home page
-    header('Location: ' . filter_var($logoutURL, FILTER_SANITIZE_URL) . '&expired');
+    header('Location: ' . filter_var($logoutURL, FILTER_SANITIZE_URL) . '&prohibited');
 }
 
 ##

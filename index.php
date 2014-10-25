@@ -85,6 +85,10 @@ include('header.php');?>
 <div id="login-group" class ="centered">
 <?php if (isset($googleAuthURL) && isset($twitterAuthURL) && isset($facebookAuthURL)) { ?>
 
+    <?php if (isset($_REQUEST['prohibited'])) { ?>
+    <div class="alert alert-danger" role="alert">You are not authenticated. Please log in.</div>
+    <?php } ?>
+
     <?php if (isset($_REQUEST['expired'])) { ?>
     <div class="alert alert-warning" role="alert">Your access token has expired. Please log in again.</div>
     <?php } ?>
@@ -93,9 +97,14 @@ include('header.php');?>
     <div class="alert alert-info" role="alert">You have been logged out successfully.</div>
     <?php } ?>
 
-    <p class="text-center">
-        Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor.
+    <?php if (!(isset($_REQUEST['prohibited']) || isset($_REQUEST['expired']))) { ?>
+    <p>
+        This prototype application allows participants of the <b><a href="http://mlearn4web.eu/">mlearn4web learning platform</a></b> to edit
+        previously created images using the <a href="http://www.sumopaint.com">SumoPaint Editor</a>.
+        <br>
+
     </p>
+    <?php } ?>
 
     <ul class="list-group">
         <li class="list-group-item">

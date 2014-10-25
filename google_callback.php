@@ -54,7 +54,7 @@ if (isset($_SESSION['google_access_token'])) {
     }
 } else {
     # Not logged in: Return to home page
-    header('Location: ' . filter_var($logoutURL, FILTER_SANITIZE_URL) . '&expired');
+    header('Location: ' . filter_var($logoutURL, FILTER_SANITIZE_URL) . '&prohibited');
 }
 
 ##
