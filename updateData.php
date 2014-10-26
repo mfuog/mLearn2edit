@@ -27,7 +27,6 @@ foreach ($dataset['data'] as $screenKey => $screen) {
             if ($element['value'] == $oldImagePath) {
                 $dataset['data'][$screenKey][$elementKey]['value'] = $newImageData;
             } else {
-                var_dump("nox!");
                 # Replace path of other images with their base64 encoded image data to avoid data corruption.
                 # (This is necessary because the API expects base64 encoded image data as image PUT parameter only.)
                 $image = file_get_contents(MLEARN4WEB . $element['value']);
