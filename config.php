@@ -38,7 +38,7 @@ define('FACEBOOK_APP_SECRET', 'fcf08b757efe2ef7f9d6c4d1b7d993b4');
  * Frequently used URLs.
  */
 if (isset($_SERVER['HTTPS'])) { $protocol = 'https://'; } else{ $protocol = 'http://'; }
-define('BASE_URL',  $protocol. '://' . $_SERVER['HTTP_HOST'] . dirname($_SERVER['SCRIPT_NAME']));
+define('BASE_URL',  $protocol. $_SERVER['HTTP_HOST'] . dirname($_SERVER['SCRIPT_NAME']));
 define('LOGOUT_URL', BASE_URL . '?logout');
 define('MLEARN4WEB', 'http://celtest1.lnu.se:3030');
 define('MLEARN4WEB_API_URL', MLEARN4WEB . '/mlearn4web');
