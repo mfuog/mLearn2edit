@@ -15,32 +15,41 @@ $newImageData = $_SESSION['newImageData'];
 $datasetRequest = MLEARN4WEB_API_URL . "/getdata/" . $datasetID;
 $dataset = trim(file_get_contents($datasetRequest));
 $dataset = json_decode($dataset, true);
-$scenarioID = $dataset['scenarioId'];
 
-#var_dump($dataset);
+var_dump($dataset);
 
-# Include manipulated image in existing dataset by adding a new element
+# Include manipulated image by creating a new element within existing dataset
 foreach ($dataset['data'] as $screenKey => $screen) {
     foreach ($screen as $elementKey => $element) {
-        if ($element['type'] == 'image' && $element['value'] == $oldImagePath) {
+        if ($element['type'] == 'image') {
 
-            # create a copy of the element containing the image
-            $copy = array();
-            $copy['elementId'] = $element['elementId'];
-            $copy['type'] = $element['type'];
-            $copy['value'] = $newImageData;
+            # If this is the selected image, carry out the copying
+            if($element['value'] == $oldImagePath) {
+                # create a copy of the element containing the original image
+                $copy = array();
+                $copy['elementId'] = $element['elementId'];
+                $copy['type'] = $element['type'];
+                $copy['value'] = $newImageData;
 
-            # TODO add version info
+                # Increase version count
+                $copy['elementId'] = increaseVersion($copy['elementId']);
 
-            # Add new element to screen of original element
-            $dataset['data'][$screenKey][] = $copy;
-            break;
+                # Add new element to original element's screen
+                $dataset['data'][$screenKey][] = $copy;
+            }
+
+            # Replace path of existing images with their base64 encoded image data to avoid data corruption.
+            # (This is necessary because the API expects base64 encoded image data as image PUT parameter only.)
+            $image = file_get_contents(MLEARN4WEB . $element['value']);
+            $dataset['data'][$screenKey][$elementKey]['value'] = base64_encode($image);
         }
     }
 }
-# attributes not needed for POST request
+
+# attributes not needed for PUT request
 unset($dataset['_id']);
 unset($dataset['scenarioId']);
+unset($dataset['__v']);
 unset($dataset['timestamp']);
 
 #echo "dataset with new image element:";
@@ -48,11 +57,11 @@ unset($dataset['timestamp']);
 
 # Process updatedata PUT request
 $dataString = json_encode($dataset);
-$requestURL = MLEARN4WEB_API_URL . '/newdata/' . $scenarioID;
+$requestURL = MLEARN4WEB_API_URL . '/updatedata/' . $datasetID;
 $headers= array('Accept: application/json','Content-Type: application/json');
 
 $ch = curl_init($requestURL);
-curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "POST");
+curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "PUT");
 curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
 curl_setopt($ch, CURLOPT_POSTFIELDS,$dataString);
@@ -62,3 +71,15 @@ $_SESSION['saved'] = true;
 curl_close($ch); # Seems like good practice
 
 header('Location: ' . BASE_URL . '/editImage.php');
+
+function increaseVersion($origVersionString) {
+
+    $preString = substr($origVersionString, 0, 3) . '_v';
+    if (strlen($origVersionString) == 3) {
+        $newVersionString = $preString . '1';
+    } else {
+        $origVersion = intval(substr($origVersionString, 5));
+        $newVersionString = $preString . ($origVersion + 1);
+    }
+    return $newVersionString;
+}
