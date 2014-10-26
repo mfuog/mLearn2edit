@@ -16,7 +16,7 @@ $datasetRequest = MLEARN4WEB_API_URL . "/getdata/" . $datasetID;
 $dataset = trim(file_get_contents($datasetRequest));
 $dataset = json_decode($dataset, true);
 
-var_dump($dataset);
+#var_dump($dataset);
 
 # Include manipulated image by creating a new element within existing dataset
 foreach ($dataset['data'] as $screenKey => $screen) {
