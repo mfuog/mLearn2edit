@@ -51,8 +51,10 @@ curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
 curl_setopt($ch, CURLOPT_POSTFIELDS,$dataString);
 curl_setopt($ch, CURLOPT_FOLLOWLOCATION, 1);
-$result = curl_exec($ch);
-curl_close($ch);  // Seems like good practice
+if (curl_exec($ch)) {
+    $_SESSION['saved'] = true;
+}
+curl_close($ch); # Seems like good practice
 
 $baseURL = 'http://' . $_SERVER['HTTP_HOST'] . dirname($_SERVER['SCRIPT_NAME']);
 header('Location: ' . $baseURL . '/editImage.php');

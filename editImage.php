@@ -75,9 +75,13 @@ if(isset($_POST['url'])) {
         <?php } else if(isset($_GET['oldImageURL'])) { ?>
             <h4>Original image:</h4>
             <button class="btn btn-default" type="submit" form="sumoEdit" value="Submit">Edit</button>
-        <?php } else {
-            # Neither POST nor GET: User returned from updateData.php. See comment above. ?>
+        <?php } else if (isset($_SESSION['saved'])) {
+            # User returned from updateData.php. See comment above.
+            unset($_SESSION['saved']);?>
             <div class="alert alert-success" role="alert">The edited image has been saved and its dataset was updated.</div>
+        <?php } else {
+            # Neither POST nor GET nor SESSION[saved]: User came . ?>
+            <div class="alert alert-danger" role="alert">No image selected. Go <a href="<?php echo $imageListURL ?>">back</a> to image list. </div>
         <?php } ?>
 
         <?php
