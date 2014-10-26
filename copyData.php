@@ -1,4 +1,5 @@
 <?php
+require_once __DIR__ . '/config.php';
 $session = session_start();
 
 # Example images for debugging
@@ -11,7 +12,7 @@ $oldImagePath = $_SESSION['oldImagePath'];
 $newImageData = $_SESSION['newImageData'];
 
 # Retrieve dataset of given ID
-$datasetRequest = $baseAPIURL . "/getdata/" . $datasetID;
+$datasetRequest = MLEARN4WEB_API_URL . "/getdata/" . $datasetID;
 $dataset = trim(file_get_contents($datasetRequest));
 $dataset = json_decode($dataset, true);
 $scenarioID = $dataset['scenarioId'];
@@ -38,7 +39,7 @@ unset($dataset['timestamp']);
 
 # Process updatedata PUT request
 $dataString = json_encode($dataset);
-$requestURL = $baseAPIURL . '/newdata/' . $scenarioID;
+$requestURL = MLEARN4WEB_API_URL . '/newdata/' . $scenarioID;
 $headers= array('Accept: application/json','Content-Type: application/json');
 
 $ch = curl_init($requestURL);
