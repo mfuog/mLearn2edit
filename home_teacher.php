@@ -148,7 +148,10 @@ unset($_SESSION['newImageData']);
                                                         .'&datasetID=' . $dataset['_id']
                                                         .'&oldImagePath=' . $element['value']
                                                         .'&oldImageURL=' . MLEARN4WEB . $element['value'];
-                                                    ?>
+
+                                                    if (strlen($element['elementId']) > 3) {
+                                                        $version = explode('_', $element['elementId'])[1];
+                                                    }?>
                                                     <li>
                                                         <b>Image</b>
                                                         <?php if (isset($version)) { ?>
