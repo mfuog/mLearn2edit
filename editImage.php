@@ -79,8 +79,7 @@ if(isset($_POST['url'])) {
             # User returned from updateData.php. See comment above.
             unset($_SESSION['saved']);?>
             <div class="alert alert-success" role="alert">The edited image has been saved and its dataset was updated.</div>
-        <?php } else {
-            # Neither POST nor GET nor SESSION[saved]: User came . ?>
+        <?php } else { ?>
             <div class="alert alert-danger" role="alert">No image selected. Go <a href="<?php echo $imageListURL ?>">back</a> to image list. </div>
         <?php } ?>
 
