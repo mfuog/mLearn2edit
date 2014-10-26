@@ -14,7 +14,7 @@ if (isset($_GET['oauth_token'])) {
     # use the user's previously stored temporary credentials here
     $twitter = new TwitterOAuth(TWITTER_CONSUMER_KEY, TWITTER_CONSUMER_SECRET,
         $_SESSION['twitter_request_token'], $_SESSION['twitter_request_token_secret']);
-    $version = $twitter->useAPIVersion("1.1");
+    $twitter->useAPIVersion("1.1");
 
     # uses the oauth_token from the request
     $credentials = $twitter->getAccessToken($_GET['oauth_verifier']);
@@ -54,7 +54,11 @@ unset($_SESSION['newImageData']);
 <div id="content" class ="centered">
     <?php include('logoutGroup.php')?>
     <h3>Saved image data for all scenarios <span class="badge alert-info"><?php echo $_SESSION['user_role'] ?></span></h3>
-    <div class="well">Below, all datasets that contain any images are listed.</div>
+    <div class="well">
+        Below, all image-containing datasets are listed.<br>
+        Images collected by students while solving a scenario, are marked as <span class="badge alert-info">originals</span>
+        while manipulated copies are marked as <span class="badge alert-danger">edited</span>.
+    </div>
     <ol>
     <?php foreach($datasets as $dataset) {
         $scenarioRequest = MLEARN4WEB_API_URL . "/get/" . $dataset['scenarioId'];
@@ -81,9 +85,17 @@ unset($_SESSION['newImageData']);
                                                     .'&datasetID=' . $dataset['_id']
                                                     .'&oldImagePath=' . $element['value']
                                                     .'&oldImageURL=' . MLEARN4WEB . $element['value'];
-                                        ?>
+
+                                        if (strlen($element['elementId']) > 3) {
+                                            $version = explode('_', $element['elementId'])[1];
+                                        }?>
                                         <li>
-                                            <b>Image:</b>
+                                            <b>Image</b>
+                                            <?php if (isset($version)) { ?>
+                                                <span class="badge alert-danger">edited (<?php echo $version ?>)</span>
+                                            <?php } else {?>
+                                                <span class="badge alert-info">original</span>
+                                            <?php }?>
                                             <a href="<?php echo BASE_URL . '/editImage.php' . $getParams ?>" class="btn btn-default btn-xs">click to manipulate</a>
                                         </li>
                                     <?php } ?>

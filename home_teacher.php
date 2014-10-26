@@ -106,6 +106,8 @@ unset($_SESSION['newImageData']);
                 <?php } ?>
                 <li>originate from a scenario tagged <span class="badge alert-warning">[allTeachers]</span></li>
             </ul>
+            Images collected by students while solving a scenario, are marked as <span class="badge alert-info">originals</span>
+            while manipulated copies are marked as <span class="badge alert-danger">edited</span>.
         </div>
 
         <!--dataset listing-->
@@ -148,7 +150,12 @@ unset($_SESSION['newImageData']);
                                                         .'&oldImageURL=' . MLEARN4WEB . $element['value'];
                                                     ?>
                                                     <li>
-                                                        <b>Image:</b>
+                                                        <b>Image</b>
+                                                        <?php if (isset($version)) { ?>
+                                                            <span class="badge alert-danger">edited (<?php echo $version ?>)</span>
+                                                        <?php } else {?>
+                                                            <span class="badge alert-info">original</span>
+                                                        <?php }?>
                                                         <a href="<?php echo BASE_URL . '/editImage.php' . $getParams ?>" class="btn btn-default btn-xs">click to manipulate</a>
                                                     </li>
                                                 <?php } ?>
