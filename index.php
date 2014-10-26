@@ -45,7 +45,7 @@ $googleClient = new Google_Client();
 $googleClient->setClientId(GOOGLE_CLIENT_ID);
 $googleClient->setClientSecret(GOOGLE_CLIENT_SECRET);
 $googleClient->setDeveloperKey(GOOGLE_API_KEY);
-$googleClient->setRedirectUri($baseURL . '/google_callback.php');
+$googleClient->setRedirectUri($baseURL . '/home_teacher.php');
 $googleClient->addScope("https://www.googleapis.com/auth/userinfo.profile");
 # Provide auth URL
 $googleAuthURL = $googleClient->createAuthUrl();

@@ -15,7 +15,7 @@ if ($_SESSION['user_role'] == 'admin') {
     $imageListURL = $baseURL . '/home_admin.php';
 } else if ($_SESSION['user_role'] == 'teacher') {
     printf('%s, you are logged in as a %s (<i>via Google</i>)', $_SESSION['user_name'], $_SESSION['user_role']);
-    $imageListURL = $baseURL . '/google_callback.php';
+    $imageListURL = $baseURL . '/home_teacher.php';
 } else if ($_SESSION['user_role'] == 'student') {
     printf('%s, you are logged in as a %s (<i>via Facebook</i>)', $_SESSION['user_name'], $_SESSION['user_role']);
     $imageListURL = $baseURL . '/fb_callback.php';
