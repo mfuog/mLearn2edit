@@ -18,7 +18,7 @@ if ($_SESSION['user_role'] == 'admin') {
     $imageListURL = $baseURL . '/home_teacher.php';
 } else if ($_SESSION['user_role'] == 'student') {
     printf('%s, you are logged in as a %s (<i>via Facebook</i>)', $_SESSION['user_name'], $_SESSION['user_role']);
-    $imageListURL = $baseURL . '/fb_callback.php';
+    $imageListURL = $baseURL . '/home_student.php';
 } else {
     # Not logged in: Return to home page
     header('Location: ' . filter_var($logoutURL, FILTER_SANITIZE_URL) . '&prohibited');

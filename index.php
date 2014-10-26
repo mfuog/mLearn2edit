@@ -66,7 +66,7 @@ $twitterAuthURL = $twitterConnection->getAuthorizeURL($requestToken, false);
 # Facebook setup
 ##
 FacebookSession::setDefaultApplication(FACEBOOK_APP_KEY, FACEBOOK_APP_SECRET);
-$facebookHelper = new FacebookRedirectLoginHelper($homeURL . 'fb_callback.php');
+$facebookHelper = new FacebookRedirectLoginHelper($homeURL . 'home_student.php');
 try {
     $_SESSION['FBRLH_state'] = $facebookHelper->getSessionFromRedirect();
 } catch(FacebookRequestException $ex) {
@@ -76,7 +76,7 @@ try {
 }
 # Provide auth URL
 $callbackURL = $baseURL;
-$facebookHelper = new FacebookRedirectLoginHelper($callbackURL . '/fb_callback.php');
+$facebookHelper = new FacebookRedirectLoginHelper($callbackURL . '/home_student.php');
 $facebookAuthURL = $facebookHelper->getLoginUrl();
 
 include('header.php');?>
