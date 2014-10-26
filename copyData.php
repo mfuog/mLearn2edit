@@ -10,10 +10,6 @@ $datasetID = $_SESSION['datasetID'];
 $oldImagePath = $_SESSION['oldImagePath'];
 $newImageData = $_SESSION['newImageData'];
 
-# commonly used mlearn4web URLs
-$serviceHost = "http://celtest1.lnu.se:3030";
-$baseAPIURL = $serviceHost . "/mlearn4web";
-
 # Retrieve dataset of given ID
 $datasetRequest = $baseAPIURL . "/getdata/" . $datasetID;
 $dataset = trim(file_get_contents($datasetRequest));

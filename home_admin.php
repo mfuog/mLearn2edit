@@ -37,12 +37,8 @@ if (isset($_SESSION['twitter_access_token'])) {
 # Manage content
 ##
 
-# commonly used mlearn4web URLs
-$serviceHost = "http://celtest1.lnu.se:3030";
-$baseUrlAPI = $serviceHost . "/mlearn4web";
-
 # Retrieve all datasets
-$datasetsRequest = $baseUrlAPI . "/getalldata";
+$datasetsRequest = MLEARN4WEB_API_URL . "/getalldata";
 $datasets = trim(file_get_contents($datasetsRequest));
 $datasets = json_decode($datasets, true);
 
@@ -61,7 +57,7 @@ unset($_SESSION['newImageData']);
     <div class="well">Below, all datasets that contain any images are listed.</div>
     <ol>
     <?php foreach($datasets as $dataset) {
-        $scenarioRequest = $baseUrlAPI . "/get/" . $dataset['scenarioId'];
+        $scenarioRequest = MLEARN4WEB_API_URL . "/get/" . $dataset['scenarioId'];
         $scenario = json_decode(trim(file_get_contents($scenarioRequest)), true);
         # only display a dataset, if it contains any images
         if (strpos(json_encode($dataset), "image") !== false ) {?>
@@ -84,7 +80,7 @@ unset($_SESSION['newImageData']);
                                         $getParams = '?scenarioID=' . $dataset['scenarioId']
                                                     .'&datasetID=' . $dataset['_id']
                                                     .'&oldImagePath=' . $element['value']
-                                                    .'&oldImageURL=' . $serviceHost . $element['value'];
+                                                    .'&oldImageURL=' . MLEARN4WEB . $element['value'];
                                         ?>
                                         <li>
                                             <b>Image:</b>

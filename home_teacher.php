@@ -56,17 +56,13 @@ if (isset($_SESSION['google_access_token'])) {
 # Manage content
 ##
 
-# commonly used mlearn4web URLs
-$serviceHost = "http://celtest1.lnu.se:3030";
-$baseUrlAPI = $serviceHost . "/mlearn4web";
-
 # Retrieve all datasets
-$datasetsRequest = $baseUrlAPI . "/getalldata";
+$datasetsRequest = MLEARN4WEB_API_URL . "/getalldata";
 $datasets = trim(file_get_contents($datasetsRequest));
 $datasets = json_decode($datasets, true);
 
 # Retrieve all scenarios
-$scenariosRequest = $baseUrlAPI . "/getall";
+$scenariosRequest = MLEARN4WEB_API_URL . "/getall";
 $scenarios = trim(file_get_contents($scenariosRequest));
 $scenarios = json_decode($scenarios, true);
 # Retrieve all user IDs
@@ -115,7 +111,7 @@ unset($_SESSION['newImageData']);
         <!--dataset listing-->
         <ol>
             <?php foreach($datasets as $dataset) {
-                $scenarioRequest = $baseUrlAPI . "/get/" . $dataset['scenarioId'];
+                $scenarioRequest = MLEARN4WEB_API_URL . "/get/" . $dataset['scenarioId'];
                 $scenarioString = trim(file_get_contents($scenarioRequest));
                 $scenario = json_decode($scenarioString, true);
                 $datasetString = json_encode($dataset);
@@ -149,7 +145,7 @@ unset($_SESSION['newImageData']);
                                                     $getParams = '?scenarioID=' . $dataset['scenarioId']
                                                         .'&datasetID=' . $dataset['_id']
                                                         .'&oldImagePath=' . $element['value']
-                                                        .'&oldImageURL=' . $serviceHost . $element['value'];
+                                                        .'&oldImageURL=' . MLEARN4WEB . $element['value'];
                                                     ?>
                                                     <li>
                                                         <b>Image:</b>
