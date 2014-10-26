@@ -16,19 +16,28 @@ $datasetRequest = MLEARN4WEB_API_URL . "/getdata/" . $datasetID;
 $dataset = trim(file_get_contents($datasetRequest));
 $dataset = json_decode($dataset, true);
 
-# var_dump($dataset);
+#var_dump($dataset);
 
-# Replace old image's path with base64 encoded data of new image
+# Update value of manipulated image in its dataset
 foreach ($dataset['data'] as $screenKey => $screen) {
     foreach ($screen as $elementKey => $element) {
-        if ($element['type'] == 'image' && $element['value'] == $oldImagePath) {
-            $dataset['data'][$screenKey][$elementKey]['value'] = $newImageData;
-            break;
+        if ($element['type'] == 'image') {
+
+            # Replace path of original image with the manipulated image data
+            if ($element['value'] == $oldImagePath) {
+                $dataset['data'][$screenKey][$elementKey]['value'] = $newImageData;
+            } else {
+                var_dump("nox!");
+                # Replace path of other images with their base64 encoded image data to avoid data corruption.
+                # (This is necessary because the API expects base64 encoded image data as image PUT parameter only.)
+                $image = file_get_contents(MLEARN4WEB . $element['value']);
+                $dataset['data'][$screenKey][$elementKey]['value'] = base64_encode($image);
+            }
         }
     }
 }
-# echo "dataset with new image value:";
-# var_dump($dataset);
+#echo "dataset with new image value:";
+#var_dump($dataset);
 
 # Process updatedata PUT request
 $dataString = json_encode($dataset);
