@@ -38,6 +38,12 @@ foreach ($dataset['data'] as $screenKey => $screen) {
 #echo "dataset with new image value:";
 #var_dump($dataset);
 
+# attributes not needed for PUT request
+unset($dataset['_id']);
+unset($dataset['scenarioId']);
+unset($dataset['__v']);
+unset($dataset['timestamp']);
+
 # Process updatedata PUT request
 $dataString = json_encode($dataset);
 $requestURL = MLEARN4WEB_API_URL . '/updatedata/' . $datasetID;
