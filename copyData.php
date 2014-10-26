@@ -17,25 +17,34 @@ $dataset = trim(file_get_contents($datasetRequest));
 $dataset = json_decode($dataset, true);
 $scenarioID = $dataset['scenarioId'];
 
-#var_dump($dataset);
+var_dump($dataset);
 
-# Replace old image's path with base64 encoded data of new image
+# Save $newImageData in a new element within the original's dataset.
 foreach ($dataset['data'] as $screenKey => $screen) {
     foreach ($screen as $elementKey => $element) {
         if ($element['type'] == 'image' && $element['value'] == $oldImagePath) {
-            $dataset['data'][$screenKey][$elementKey]['value'] = $newImageData;
+
+            # create a copy of the element containing the image
+            $copy = array();
+            $copy['elementId'] = $element['elementId'];
+            $copy['type'] = $element['type'];
+            $copy['value'] = $newImageData;
+
+            # TODO add version info
+
+            # Add new element to screen of original element
+            $dataset['data'][$screenKey][] = $copy;
             break;
         }
     }
 }
-# TODO: Increase version of dataset - not allowed by API. Alternative :/
-$dataset['__v']++;
+# attributes not needed for POST request
 unset($dataset['_id']);
 unset($dataset['scenarioId']);
 unset($dataset['timestamp']);
 
-#echo "dataset with new image value:";
-#var_dump($dataset);
+echo "dataset with new image element:";
+var_dump($dataset);
 
 # Process updatedata PUT request
 $dataString = json_encode($dataset);
