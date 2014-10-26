@@ -77,7 +77,7 @@ unset($_SESSION['newImageData']);
             <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1">
                 <li role="presentation"><a role="menuitem" tabindex="-1" href="<?php echo $thisURL ?>"><i>none</i></a></li>
                 <?php foreach($groupNames as $groupName) {?>
-                    <li role="presentation"><a role="menuitem" tabindex="-1" href="?groupname=<?php echo $groupName?>"><?php echo $groupName?></a></li>
+                    <li role="presentation"><a role="menuitem" tabindex="-1" href="?groupname=<?php echo urlencode($groupName)?>"><?php echo $groupName?></a></li>
                 <?php }?>
             </ul>
         </div>
