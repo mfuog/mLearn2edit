@@ -12,7 +12,7 @@ $logoutURL = $baseURL . '/index.php?logout';
 
 if ($_SESSION['user_role'] == 'admin') {
     printf('%s, you are logged in as an %s (<i>via Twitter</i>)', $_SESSION['user_name'], $_SESSION['user_role']);
-    $imageListURL = $baseURL . '/twitter_callback.php';
+    $imageListURL = $baseURL . '/home_admin.php';
 } else if ($_SESSION['user_role'] == 'teacher') {
     printf('%s, you are logged in as a %s (<i>via Google</i>)', $_SESSION['user_name'], $_SESSION['user_role']);
     $imageListURL = $baseURL . '/google_callback.php';
