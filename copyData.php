@@ -19,7 +19,7 @@ $scenarioID = $dataset['scenarioId'];
 
 #var_dump($dataset);
 
-# Save $newImageData in a new element within the original's dataset.
+# Include manipulated image in existing dataset by adding a new element
 foreach ($dataset['data'] as $screenKey => $screen) {
     foreach ($screen as $elementKey => $element) {
         if ($element['type'] == 'image' && $element['value'] == $oldImagePath) {
