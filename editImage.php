@@ -72,12 +72,12 @@ if(isset($_POST['url'])) {
             <h4>Original image:</h4>
             <button class="btn btn-default" type="submit" form="sumoEdit" value="Submit">Edit</button>
         <?php } else if (isset($_SESSION['saved'])) {
-            # User returned from updateData.php. See comment above.
-            unset($_SESSION['saved']);?>
+            # User returned from updateData.php. See comment above.?>
             <div class="alert alert-success" role="alert">The edited image has been saved and its dataset was updated.</div>
         <?php } else { ?>
             <div class="alert alert-danger" role="alert">No image selected. Go <a href="<?php echo $imageListURL ?>">back</a> to image list. </div>
-        <?php } ?>
+        <?php }
+        unset($_SESSION['saved']);?>
 
         <?php
         # Only show form to edit picture, if user has not yet saved any changes. See comment above.
