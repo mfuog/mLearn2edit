@@ -17,7 +17,7 @@ $dataset = trim(file_get_contents($datasetRequest));
 $dataset = json_decode($dataset, true);
 $scenarioID = $dataset['scenarioId'];
 
-var_dump($dataset);
+#var_dump($dataset);
 
 # Save $newImageData in a new element within the original's dataset.
 foreach ($dataset['data'] as $screenKey => $screen) {
@@ -43,8 +43,8 @@ unset($dataset['_id']);
 unset($dataset['scenarioId']);
 unset($dataset['timestamp']);
 
-echo "dataset with new image element:";
-var_dump($dataset);
+#echo "dataset with new image element:";
+#var_dump($dataset);
 
 # Process updatedata PUT request
 $dataString = json_encode($dataset);
