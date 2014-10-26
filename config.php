@@ -34,3 +34,10 @@ define('TWITTER_CONSUMER_SECRET', 'hb463hsWg8DxUBnieO36tSceEDnoFXuQUJHPNGRqxNPDT
 define('FACEBOOK_APP_KEY', '774184132645579');
 define('FACEBOOK_APP_SECRET', 'fcf08b757efe2ef7f9d6c4d1b7d993b4');
 
+/**
+ * Frequently used URLs.
+ */
+define('BASE_URL', 'http://' . $_SERVER['HTTP_HOST'] . dirname($_SERVER['SCRIPT_NAME']));
+define('LOGOUT_URL', BASE_URL . '?logout');
+
+

@@ -2,13 +2,7 @@
 require_once __DIR__ . '/vendor/abraham/twitteroauth/twitteroauth/twitteroauth.php';
 require_once __DIR__ . '/config.php';
 
-if ( session_id() == '' ) {
-    $session = session_start();
-}
-# Set commonly used URLs
-$baseURL = 'http://' . $_SERVER['HTTP_HOST'] . dirname($_SERVER['SCRIPT_NAME']);
-$homeURL = $baseURL . '/' . basename($_SERVER['SCRIPT_NAME']);
-$logoutURL = $baseURL . '/index.php?logout';
+$session = session_start();
 
 ##
 # Twitter Authentication
@@ -36,7 +30,7 @@ if (isset($_SESSION['twitter_access_token'])) {
     printf('%s, you are logged in as an %s (<i>via Twitter</i>)', $_SESSION['user_name'], $_SESSION['user_role']);
 } else {
     # Not logged in: Return to home page
-    header('Location: ' . filter_var($logoutURL, FILTER_SANITIZE_URL) . '&prohibited');
+    header('Location: ' . filter_var(LOGOUT_URL, FILTER_SANITIZE_URL) . '&prohibited');
 }
 
 ##
@@ -94,7 +88,7 @@ unset($_SESSION['newImageData']);
                                         ?>
                                         <li>
                                             <b>Image:</b>
-                                            <a href="<?php echo $baseURL . '/editImage.php' . $getParams ?>" class="btn btn-default btn-xs">click to manipulate</a>
+                                            <a href="<?php echo BASE_URL . '/editImage.php' . $getParams ?>" class="btn btn-default btn-xs">click to manipulate</a>
                                         </li>
                                     <?php } ?>
 

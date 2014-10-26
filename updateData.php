@@ -48,5 +48,4 @@ curl_exec($ch);
 $_SESSION['saved'] = true;
 curl_close($ch); # Seems like good practice
 
-$baseURL = 'http://' . $_SERVER['HTTP_HOST'] . dirname($_SERVER['SCRIPT_NAME']);
-header('Location: ' . $baseURL . '/editImage.php');
+header('Location: ' . BASE_URL . '/editImage.php');

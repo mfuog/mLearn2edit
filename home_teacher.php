@@ -2,13 +2,8 @@
 require_once __DIR__ . '/vendor/google/apiclient/autoload.php';
 require_once __DIR__ . '/config.php';
 
-if ( session_id() == '' ) {
-    $session = session_start();
-}
-# Commonly used URLs
-$baseURL = 'http://' . $_SERVER['HTTP_HOST'] . dirname($_SERVER['SCRIPT_NAME']);
-$homeURL = $baseURL . '/' . basename($_SERVER['SCRIPT_NAME']);
-$logoutURL = $baseURL . '/index.php?logout';
+$session = session_start();
+$thisURL = BASE_URL . '/' . basename($_SERVER['SCRIPT_NAME']);
 
 ##
 # Google Authentication
@@ -19,14 +14,14 @@ $googleClient = new Google_Client();
 $googleClient->setClientId(GOOGLE_CLIENT_ID);
 $googleClient->setClientSecret(GOOGLE_CLIENT_SECRET);
 $googleClient->setDeveloperKey(GOOGLE_API_KEY);
-$googleClient->setRedirectUri($homeURL);
+$googleClient->setRedirectUri($thisURL);
 $googleClient->addScope("https://www.googleapis.com/auth/userinfo.profile");
 
 # Attempt to exchange the GET response from the authentication URL, for a valid authentication token.
 if (isset($_GET['code'])) {
     try {
         $_SESSION['google_access_token'] = $googleClient->authenticate($_GET['code']);
-        header('Location: ' . filter_var($homeURL, FILTER_SANITIZE_URL));
+        header('Location: ' . filter_var($thisURL, FILTER_SANITIZE_URL));
     } catch (Google_Auth_Exception $ex) {
         // When Google returns an error
     } catch (\Exception $ex) {
@@ -41,7 +36,7 @@ if (isset($_SESSION['google_access_token'])) {
 
     # If the access token has expired, logout to acquire a new one by enforcing a new sign-in.
     if($googleClient -> isAccessTokenExpired()){
-        header('Location: ' . filter_var($logoutURL, FILTER_SANITIZE_URL) . '&expired');
+        header('Location: ' . filter_var(LOGOUT_URL, FILTER_SANITIZE_URL) . '&expired');
     } else {
         # Remember the google access token for later use (this normally would be saved to a database).
         $_SESSION['google_access_token'] = $googleClient->getAccessToken();
@@ -54,7 +49,7 @@ if (isset($_SESSION['google_access_token'])) {
     }
 } else {
     # Not logged in: Return to home page
-    header('Location: ' . filter_var($logoutURL, FILTER_SANITIZE_URL) . '&prohibited');
+    header('Location: ' . filter_var(LOGOUT_URL, FILTER_SANITIZE_URL) . '&prohibited');
 }
 
 ##
@@ -96,7 +91,7 @@ unset($_SESSION['newImageData']);
                 <span class="caret"></span>
             </button>
             <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1">
-                <li role="presentation"><a role="menuitem" tabindex="-1" href="<?php echo $homeURL ?>"><i>none</i></a></li>
+                <li role="presentation"><a role="menuitem" tabindex="-1" href="<?php echo $thisURL ?>"><i>none</i></a></li>
                 <?php foreach($userIDs as $id) {?>
                     <li role="presentation"><a role="menuitem" tabindex="-1" href="?teacherID=<?php echo $id?>"><?php echo $id?></a></li>
                 <?php }?>
@@ -158,7 +153,7 @@ unset($_SESSION['newImageData']);
                                                     ?>
                                                     <li>
                                                         <b>Image:</b>
-                                                        <a href="<?php echo $baseURL . '/editImage.php' . $getParams ?>" class="btn btn-default btn-xs">click to manipulate</a>
+                                                        <a href="<?php echo BASE_URL . '/editImage.php' . $getParams ?>" class="btn btn-default btn-xs">click to manipulate</a>
                                                     </li>
                                                 <?php } ?>
 

@@ -8,11 +8,7 @@ use Facebook\FacebookRequest;
 use Facebook\FacebookRequestException;
 
 $session = session_start();
-
-# commonly used URLs
-$baseURL = 'http://' . $_SERVER['HTTP_HOST'] . dirname($_SERVER['SCRIPT_NAME']);
-$homeURL = $baseURL . '/' . basename($_SERVER['SCRIPT_NAME']);
-$logoutURL = $baseURL . '/index.php?logout';
+$thisURL = BASE_URL . '/' . basename($_SERVER['SCRIPT_NAME']);
 
 ##
 # Facebook Authentication
@@ -20,8 +16,8 @@ $logoutURL = $baseURL . '/index.php?logout';
 
 # Setup
 FacebookSession::setDefaultApplication(FACEBOOK_APP_KEY, FACEBOOK_APP_SECRET);
-FacebookSession::enableAppSecretProof(false); # avoid error: 'Invalid appsecret_proof provided'
-$facebookHelper = new FacebookRedirectLoginHelper($homeURL);
+FacebookSession::enableAppSecretProof(false); # avoid error: 'Invalid app secret_proof provided'
+$facebookHelper = new FacebookRedirectLoginHelper($thisURL);
 
 try {
     # Retrieve Facebook session after coming to this page for the first time only
@@ -46,7 +42,7 @@ if(isset($_SESSION['fb_session'])) {
     printf('%s, you are logged in as a %s (<i>via Facebook</i>)', $_SESSION['user_name'], $_SESSION['user_role']);
 } else {
     # Not logged in: Return to home page
-    header('Location: ' . filter_var($logoutURL, FILTER_SANITIZE_URL) . '&prohibited');
+    header('Location: ' . filter_var(LOGOUT_URL, FILTER_SANITIZE_URL) . '&prohibited');
 }
 
 ##
@@ -83,7 +79,7 @@ unset($_SESSION['newImageData']);
                 <span class="caret"></span>
             </button>
             <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1">
-                <li role="presentation"><a role="menuitem" tabindex="-1" href="<?php echo $homeURL ?>"><i>none</i></a></li>
+                <li role="presentation"><a role="menuitem" tabindex="-1" href="<?php echo $thisURL ?>"><i>none</i></a></li>
                 <?php foreach($groupNames as $groupName) {?>
                     <li role="presentation"><a role="menuitem" tabindex="-1" href="?groupname=<?php echo $groupName?>"><?php echo $groupName?></a></li>
                 <?php }?>
@@ -149,7 +145,7 @@ unset($_SESSION['newImageData']);
                                                     ?>
                                                     <li>
                                                         <b>Image:</b>
-                                                        <a href="<?php echo $baseURL . '/editImage.php' . $getParams ?>" class="btn btn-default btn-xs">click to manipulate</a>
+                                                        <a href="<?php echo BASE_URL . '/editImage.php' . $getParams ?>" class="btn btn-default btn-xs">click to manipulate</a>
                                                     </li>
                                                 <?php } ?>
 

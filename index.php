@@ -8,14 +8,7 @@ use Facebook\FacebookSession;
 use Facebook\FacebookRedirectLoginHelper;
 use Facebook\FacebookRequestException;
 
-if ( session_id() == '' ) {
-    $session = session_start();
-}
-
-# Commonly used URLs
-$baseURL = 'http://' . $_SERVER['HTTP_HOST'] . dirname($_SERVER['SCRIPT_NAME']);
-$homeURL = $baseURL . '/' . basename($_SERVER['SCRIPT_NAME']);
-$logoutURL = $homeURL . '?logout';
+$session = session_start();
 
 # To handle logging out and expired access tokens, delete the local access token
 # and user role and redirect to the home URL.
@@ -45,7 +38,7 @@ $googleClient = new Google_Client();
 $googleClient->setClientId(GOOGLE_CLIENT_ID);
 $googleClient->setClientSecret(GOOGLE_CLIENT_SECRET);
 $googleClient->setDeveloperKey(GOOGLE_API_KEY);
-$googleClient->setRedirectUri($baseURL . '/home_teacher.php');
+$googleClient->setRedirectUri(BASE_URL . '/home_teacher.php');
 $googleClient->addScope("https://www.googleapis.com/auth/userinfo.profile");
 # Provide auth URL
 $googleAuthURL = $googleClient->createAuthUrl();
@@ -55,7 +48,7 @@ $googleAuthURL = $googleClient->createAuthUrl();
 # Twitter setup
 ##
 $twitterConnection = new TwitterOAuth(TWITTER_CONSUMER_KEY, TWITTER_CONSUMER_SECRET);
-$requestToken = $twitterConnection->getRequestToken($baseURL . '/home_admin.php');
+$requestToken = $twitterConnection->getRequestToken(BASE_URL . '/home_admin.php');
 # Remember temporary token for use on callback page
 $_SESSION['twitter_request_token'] = $requestToken['oauth_token'];
 $_SESSION['twitter_request_token_secret'] = $requestToken['oauth_token_secret'];
@@ -66,7 +59,7 @@ $twitterAuthURL = $twitterConnection->getAuthorizeURL($requestToken, false);
 # Facebook setup
 ##
 FacebookSession::setDefaultApplication(FACEBOOK_APP_KEY, FACEBOOK_APP_SECRET);
-$facebookHelper = new FacebookRedirectLoginHelper($homeURL . 'home_student.php');
+$facebookHelper = new FacebookRedirectLoginHelper(BASE_URL . 'home_student.php');
 try {
     $_SESSION['FBRLH_state'] = $facebookHelper->getSessionFromRedirect();
 } catch(FacebookRequestException $ex) {
@@ -75,8 +68,7 @@ try {
     # When validation fails or other local issues
 }
 # Provide auth URL
-$callbackURL = $baseURL;
-$facebookHelper = new FacebookRedirectLoginHelper($callbackURL . '/home_student.php');
+$facebookHelper = new FacebookRedirectLoginHelper(BASE_URL . '/home_student.php');
 $facebookAuthURL = $facebookHelper->getLoginUrl();
 
 include('header.php');?>

@@ -1,27 +1,22 @@
 <?php
 $session = session_start();
 
-# Set commonly used URLs
-$baseURL = 'http://' . $_SERVER['HTTP_HOST'] . dirname($_SERVER['SCRIPT_NAME']);
-$homeURL = $baseURL . '/' . basename($_SERVER['SCRIPT_NAME']);
-$logoutURL = $baseURL . '/index.php?logout';
-
 ##
 # Authentication
 ##
 
 if ($_SESSION['user_role'] == 'admin') {
     printf('%s, you are logged in as an %s (<i>via Twitter</i>)', $_SESSION['user_name'], $_SESSION['user_role']);
-    $imageListURL = $baseURL . '/home_admin.php';
+    $imageListURL = BASE_URL . '/home_admin.php';
 } else if ($_SESSION['user_role'] == 'teacher') {
     printf('%s, you are logged in as a %s (<i>via Google</i>)', $_SESSION['user_name'], $_SESSION['user_role']);
-    $imageListURL = $baseURL . '/home_teacher.php';
+    $imageListURL = BASE_URL . '/home_teacher.php';
 } else if ($_SESSION['user_role'] == 'student') {
     printf('%s, you are logged in as a %s (<i>via Facebook</i>)', $_SESSION['user_name'], $_SESSION['user_role']);
-    $imageListURL = $baseURL . '/home_student.php';
+    $imageListURL = BASE_URL . '/home_student.php';
 } else {
     # Not logged in: Return to home page
-    header('Location: ' . filter_var($logoutURL, FILTER_SANITIZE_URL) . '&prohibited');
+    header('Location: ' . filter_var(LOGOUT_URL, FILTER_SANITIZE_URL) . '&prohibited');
 }
 
 ##
@@ -90,7 +85,7 @@ if(isset($_POST['url'])) {
             <input type="hidden" name="cloud" value="false" />
             <input type="hidden" name="title" value="Image manipulation" />
             <input type="hidden" name="service" value="Save image to API target" />
-            <input type="hidden" name="target" value="<?php echo $baseURL ?>/editImage.php" />
+            <input type="hidden" name="target" value="<?php echo BASE_URL ?>/editImage.php" />
             <input type="hidden" name="url" value="<?php echo $imageURL ?>" />
             <input type="image" src="<?php echo $imageURL ?>" />
         </form>
