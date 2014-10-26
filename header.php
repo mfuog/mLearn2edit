@@ -2,7 +2,7 @@
 <html>
 <head lang="en">
     <meta charset="UTF-8">
-    <title>mlearn4web meshup</title>
+    <title>mLearn2edit</title>
     <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
     <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
     <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
@@ -18,10 +18,10 @@
     </div>
     <div class="panel-body">
         <small>
-            <b>Assignment 3</b>, Fall Term 2014, Corinna Breitinger and Myrtha Fuog<br>
+            <b>Assignment 3:</b><i> System Extensibility and Web APIs</i>, Fall Term 2014, Corinna Breitinger and Myrtha Fuog<br>
         </small>
     </div>
 </div>
 
-<h1>System Extensibility and Web APIs</h1>
+<h1>mLearn2edit</h1>
 <hr>
