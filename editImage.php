@@ -91,7 +91,7 @@ if(isset($_POST['url'])) {
             <input type="hidden" name="cloud" value="false" />
             <input type="hidden" name="title" value="Image manipulation" />
             <input type="hidden" name="service" value="Save image to API target" />
-            <input type="hidden" name="target" value="http://mylocaldomain.net/lnu/mlearn4web/editImage.php" />
+            <input type="hidden" name="target" value="<?php echo $baseURL ?>/editImage.php" />
             <input type="hidden" name="url" value="<?php echo $imageURL ?>" />
             <input type="image" src="<?php echo $imageURL ?>" />
         </form>
