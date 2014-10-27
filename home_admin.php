@@ -80,7 +80,7 @@ unset($_SESSION['newImageData']);
                                 <?php foreach($screen as $element) { ?>
 
                                     <?php if ($element['type'] == 'image') {
-                                        # Remember params for saving the image in updateData.php (after the edit process).
+                                        # Pass params for saving in editImage.php
                                         $getParams = '?scenarioID=' . $dataset['scenarioId']
                                                     .'&datasetID=' . $dataset['_id']
                                                     .'&oldImagePath=' . $element['value']
