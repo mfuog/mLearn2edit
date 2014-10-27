@@ -91,7 +91,7 @@ include('header.php');?>
 
     <?php if (!(isset($_REQUEST['prohibited']) || isset($_REQUEST['expired']))) { ?>
     <p>
-        This prototype application allows participants of the <b><a href="http://mlearn4web.eu/">mlearn4web learning platform</a></b> to edit
+        This prototype application allows participants of the <b><a href="http://mlearn4web.eu/">mLearn4web learning platform</a></b> to edit
         previously created images using the <a href="http://www.sumopaint.com">SumoPaint Editor</a>.
     </p>
     <?php } ?>
