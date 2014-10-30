@@ -19,6 +19,7 @@
     <div class="panel-body">
         <small>
             <b>Assignment 3:</b><i> System Extensibility and Web APIs</i>, Fall Term 2014, Corinna Breitinger and Myrtha Fuog<br>
+            The documentation for this project is available <a href = "https://drive.google.com/file/d/0B6laqvt4eLtPRmVIbG9XQ0RFSUU/view"><i>here</i></a>.<br>
         </small>
     </div>
 </div>
